@@ -1,0 +1,67 @@
+# Root
+.DS_Store
+*.log
+.env
+.env.*
+!/.env.example
+
+# Docker
+docker-compose.override.yml
+.dockerignore
+
+# IDE
+.idea/
+.vscode/
+.cursor/
+.zed/
+
+# OS
+Thumbs.db
+
+# Backend
+backend/vendor/
+backend/node_modules/
+backend/public/build/
+backend/storage/*.key
+backend/storage/pail/
+backend/_ide_helper.php
+backend/Homestead.json
+backend/Homestead.yaml
+backend/auth.json
+backend/phpunit.result.cache
+backend/.codex/
+backend/.phpactor.json
+
+# Frontend
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/public/build/
+frontend/.vercel
+frontend/build/
+frontend/coverage/
+frontend/*.tsbuildinfo
+frontend/.pnp
+frontend/.pnp.*
+frontend/yarn/*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
+frontend/coverage/
+frontend/!.yarn/patches
+frontend/!.yarn/plugins
+frontend/!.yarn/releases
+frontend/!.yarn/versions
+frontend/!.yarn/versions
+
+# Tests
+/tmp/e2e*.sh
+/tmp/backend.pid
+/tmp/frontend.pid
+/tmp/backend.log
+/tmp/e2e_final*
+
+# Misc
+*.swp
+*.swo
+*~

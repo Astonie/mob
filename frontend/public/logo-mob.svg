@@ -1,0 +1,29 @@
+<svg width="520" height="360" viewBox="0 0 520 360" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<!-- Mob Limited - Mountain + Pickaxe -->
+<g transform="translate(60,20)">
+  <!-- Left dark peak -->
+  <path d="M10 220 L95 95 L170 80 L30 220 Z" fill="#2B2D30"/>
+  <!-- Top light blue peak -->
+  <path d="M135 75 L285 20 L200 75 L160 110 L125 75 Z" fill="#1A5A8A"/>
+  <!-- Central large blue mountain -->
+  <path d="M105 220 L185 85 L225 125 L285 25 L350 220 L185 220 Z" fill="#10406B"/>
+  <!-- Right blue peak -->
+  <path d="M360 220 L405 85 L500 220 Z" fill="#10406B"/>
+  <!-- White cut lines -->
+  <path d="M95 95 L185 85 L105 220 L30 220 Z" stroke="white" stroke-width="8" fill="none" stroke-linejoin="round"/>
+  <path d="M285 25 L350 220" stroke="white" stroke-width="10" fill="none"/>
+  <path d="M185 85 L225 125" stroke="white" stroke-width="8" fill="none"/>
+  <!-- Pickaxe -->
+  <g transform="translate(240,165) rotate(-28)">
+    <path d="M-85 -6 L85 6 L82 12 L-88 0 Z" fill="white"/>
+    <path d="M-88 -8 L-70 3 L-75 14 L-92 2 Z" fill="white"/>
+    <ellipse cx="0" cy="2" rx="14" ry="12" fill="white"/>
+    <circle cx="0" cy="2" r="5" fill="#10406B"/>
+  </g>
+</g>
+<!-- Text -->
+<g transform="translate(0,280)">
+  <text x="260" y="40" text-anchor="middle" font-family="Inter, sans-serif" font-size="54" font-weight="800" letter-spacing="3" fill="#2B2D30">MOB LIMITED</text>
+  <text x="260" y="68" text-anchor="middle" font-family="Inter, sans-serif" font-size="18" font-weight="400" letter-spacing="0.3" fill="#10406B">Integrated Mining and Mineral Consultancy</text>
+</g>
+</svg>
