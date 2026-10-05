@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getProject } from "@/lib/api";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { getProjectImage } from "@/lib/images";
 
 export const revalidate = 3600;
 
@@ -8,9 +10,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   try {
     const { data } = await getProject(slug);
-    return { title: data.name, description: data.summary ?? undefined };
+    return { title: `${data.name} | Mob Limited`, description: data.summary ?? undefined };
   } catch {
-    return { title: "Project" };
+    return { title: "Project | Mob Limited" };
   }
 }
 
@@ -24,43 +26,68 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
     notFound();
   }
 
+  const facts = [
+    { label: "Status", value: project.status },
+    { label: "Stage", value: project.stage || "—" },
+    { label: "Type", value: project.project_type || "—" },
+    { label: "Country", value: project.country || "—" },
+    { label: "Ownership", value: project.ownership_percentage || "—" },
+    { label: "Code", value: project.code || "—" },
+  ];
+
   return (
     <div>
-      <div className="bg-slate-950 text-white">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8 py-12">
-          <Link href="/projects" className="text-xs tracking-widest text-slate-400 hover:text-white">← BACK TO PROJECTS</Link>
-          <p className="mt-4 text-xs tracking-[0.18em] text-white/60 font-semibold">{project.status.toUpperCase()} • {project.stage?.toUpperCase()}</p>
-          <h1 className="font-serif text-4xl font-bold tracking-tight mt-2">{project.name}</h1>
-          <p className="mt-4 text-slate-300 max-w-3xl leading-7">{project.summary}</p>
-          <div className="mt-6 flex flex-wrap gap-2 text-xs">
-            {project.minerals.map((m) => (
-              <span key={m.slug} className="px-2 py-1 border border-white/20">{m.name}</span>
-            ))}
-            <span className="px-2 py-1 bg-white text-slate-900">{project.country}</span>
+      <div className="relative overflow-hidden bg-[#0a1f2e]">
+        <div className="absolute inset-0">
+          <img src={getProjectImage(project.slug)} alt="" className="object-cover opacity-20" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0a1f2e] via-[#0a1f2e]/80 to-transparent" />
+        </div>
+        <div className="relative mx-auto max-w-7xl px-6 lg:px-8 py-12 lg:py-16">
+          <Link href="/projects" className="text-[12px] tracking-widest text-white/50 hover:text-white transition-colors">← BACK TO PROJECTS</Link>
+          <div className="mt-4 flex flex-wrap items-center gap-3">
+            <span className="px-2.5 py-1 rounded-full bg-white/10 text-white text-[11px] font-semibold tracking-wider">{project.status.toUpperCase()}</span>
+            {project.stage && <span className="px-2.5 py-1 rounded-full bg-white/10 text-white text-[11px] font-semibold tracking-wider">{project.stage.toUpperCase()}</span>}
+            <span className="px-2.5 py-1 rounded-full bg-[#0F4A6B] text-white text-[11px] font-semibold tracking-wider">{project.country}</span>
           </div>
+          <h1 className="mt-4 font-serif text-3xl lg:text-4xl font-bold tracking-tight text-white">{project.name}</h1>
+          <p className="mt-4 text-white/70 max-w-3xl leading-7">{project.summary}</p>
+          {project.minerals?.length > 0 && (
+            <div className="mt-6 flex flex-wrap gap-2">
+              {project.minerals.map((m: any) => (
+                <Link key={m.slug} href={`/minerals/${m.slug}`} className="px-3 py-1.5 rounded-lg bg-white/10 text-white text-xs font-medium hover:bg-white/20 transition-colors">
+                  {m.name}
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 py-10 grid lg:grid-cols-3 gap-10">
-        <div className="lg:col-span-2">
-          <h2 className="font-serif text-2xl font-bold">Overview</h2>
-          <div className="prose prose-slate mt-4 max-w-none" dangerouslySetInnerHTML={{ __html: project.description || "<p>No description.</p>" }} />
-          <div className="mt-8 grid sm:grid-cols-2 gap-4 text-sm">
-            <div className="border border-slate-200 p-4"><div className="text-xs tracking-widest text-slate-500">OWNERSHIP</div><div className="font-semibold mt-1">{project.ownership_percentage || "100%"}</div></div>
-            <div className="border border-slate-200 p-4"><div className="text-xs tracking-widest text-slate-500">LOCATION</div><div className="font-semibold mt-1">{project.location?.name || project.country}</div></div>
+      <div className="mx-auto max-w-7xl px-6 lg:px-8 py-12">
+        <div className="grid lg:grid-cols-3 gap-10">
+          <div className="lg:col-span-2 space-y-8">
+            <div>
+              <h2 className="font-serif text-2xl font-bold text-[#0a1f2e]">Overview</h2>
+              <div className="prose prose-slate mt-4 max-w-none text-[15px] leading-7 text-slate-700" dangerouslySetInnerHTML={{ __html: project.description || "<p>No description available.</p>" }} />
+            </div>
           </div>
+          <aside className="space-y-6">
+            <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+              <h3 className="text-[11px] font-bold tracking-[0.14em] text-slate-500 uppercase">Project Facts</h3>
+              <dl className="mt-4 space-y-3">
+                {facts.map((fact) => (
+                  <div key={fact.label} className="flex justify-between items-baseline gap-4 border-b border-slate-100 pb-3 last:border-0 last:pb-0">
+                    <dt className="text-[13px] text-slate-500">{fact.label}</dt>
+                    <dd className="text-[13px] font-semibold text-slate-900 text-right">{fact.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+            <Link href="/contact" className="flex h-11 items-center justify-center rounded-lg bg-[#0F4A6B] text-white text-sm font-semibold hover:bg-[#0a334d] transition-all shadow-sm">
+              Enquire About Project
+            </Link>
+          </aside>
         </div>
-        <aside className="space-y-6">
-          <div className="border border-slate-200 p-6 bg-slate-50">
-            <h4 className="font-semibold text-sm">Project Facts</h4>
-            <dl className="mt-3 space-y-2 text-sm">
-              <div className="flex justify-between"><dt className="text-slate-500">Status</dt><dd className="font-medium">{project.status}</dd></div>
-              <div className="flex justify-between"><dt className="text-slate-500">Type</dt><dd className="font-medium">{project.project_type ?? "—"}</dd></div>
-              <div className="flex justify-between"><dt className="text-slate-500">Code</dt><dd className="font-mono text-xs">{project.code ?? "—"}</dd></div>
-            </dl>
-          </div>
-          <Link href="/contact" className="block text-center h-10 leading-10 bg-[#0F4A6B] text-white text-sm font-medium hover:bg-[#0a334d]">Enquire About Project</Link>
-        </aside>
       </div>
     </div>
   );

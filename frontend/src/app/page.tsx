@@ -59,8 +59,8 @@ export default async function HomePage() {
               Malawi-based, SADC-wide — from greenfield exploration in Lilongwe to mine development across Zambia, DRC, Mozambique & Tanzania. JORC, NI 43-101 & SAMREC compliant. 120+ projects.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
-              <Link href="/projects" className="h-[46px] px-8 inline-flex items-center bg-white text-[#0F4A6B] text-[13px] font-bold tracking-wide hover:bg-white/90 transition shadow-lg">Explore Services</Link>
-              <Link href="/contact" className="h-[46px] px-8 inline-flex items-center border border-white/30 text-white text-[13px] font-semibold tracking-wide hover:bg-white/10 backdrop-blur">Contact Lilongwe HQ</Link>
+              <Link href="/projects" className="h-[46px] px-8 inline-flex items-center rounded-lg bg-white text-[#0F4A6B] text-[13px] font-bold tracking-wide hover:bg-white/90 transition shadow-lg">Explore Services</Link>
+              <Link href="/contact" className="h-[46px] px-8 inline-flex items-center rounded-lg border border-white/30 text-white text-[13px] font-semibold tracking-wide hover:bg-white/10 backdrop-blur">Contact Lilongwe HQ</Link>
             </div>
             <div className="mt-10 flex flex-wrap gap-6 text-[11px] tracking-[0.16em] text-white/60">
               <span>Lilongwe HQ • Blantyre • Kolwezi • Solwezi</span><span className="h-3 w-px bg-white/15" /><span>JORC • NI 43-101 • SAMREC</span>
@@ -102,11 +102,11 @@ function FeaturedProjects({ projects }: { projects: unknown[] }) {
       </div>
       <div className="mt-10 grid md:grid-cols-3 gap-6">
         {(projects as Array<{ name: string; slug: string; summary: string; status: string; location: { name: string } | null }>).map((p) => (
-          <Link key={p.slug} href={`/projects/${p.slug}`} className="group relative overflow-hidden border border-slate-200 bg-white hover-lift">
+          <Link key={p.slug} href={`/projects/${p.slug}`} className="group relative overflow-hidden rounded-xl border border-slate-200 bg-white hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
             <div className="relative h-40 overflow-hidden bg-slate-100">
               <Image src={getProjectImage(p.slug)} alt={p.name} fill className="object-cover group-hover:scale-105 transition-transform duration-700" unoptimized />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-              <div className="absolute bottom-2 left-3 text-[10px] tracking-[0.14em] text-white/90 bg-black/30 backdrop-blur px-2 py-1 rounded-sm">{p.status?.toUpperCase()} • {p.location?.name || "SADC"}</div>
+              <div className="absolute bottom-2 left-3 text-[10px] tracking-[0.14em] text-white/90 bg-black/30 backdrop-blur px-2 py-1 rounded-md">{p.status?.toUpperCase()} • {p.location?.name || "SADC"}</div>
             </div>
             <div className="h-1 bg-gradient-to-r from-[#0F4A6B] to-[#2A7FA3]" />
             <div className="p-6">
@@ -135,10 +135,10 @@ function MineralsStrip({ minerals }: { minerals: unknown }) {
           {list.slice(0, 4).map((m) => {
             const img = (mineralImages as Record<string, string>)[m.slug] || miningImages.core;
             return (
-              <Link key={m.slug} href={`/minerals/${m.slug}`} className="group bg-white border border-slate-200 overflow-hidden hover:border-[#0F4A6B]/20 hover:shadow-sm transition-all">
+              <Link key={m.slug} href={`/minerals/${m.slug}`} className="group bg-white rounded-xl border border-slate-200 overflow-hidden hover:border-[#0F4A6B]/30 hover:shadow-md transition-all">
                 <div className="h-28 relative overflow-hidden bg-slate-100">
                   <Image src={img} alt={m.name} fill className="object-cover group-hover:scale-105 transition-transform duration-700" unoptimized />
-                  <div className="absolute top-2 left-2 h-8 w-8 bg-[#0F4A6B] text-white flex items-center justify-center text-[11px] font-black">{m.chemical_symbol || m.name[0]}</div>
+                  <div className="absolute top-2 left-2 h-8 w-8 bg-[#0F4A6B] text-white flex items-center justify-center rounded-lg text-[11px] font-bold">{m.chemical_symbol || m.name[0]}</div>
                 </div>
                 <div className="p-5">
                   <div className="font-serif text-[16px] font-bold group-hover:text-[#0F4A6B]">{m.name}</div>
@@ -163,7 +163,7 @@ function LatestNews({ news }: { news: Array<{ title: string; slug: string; excer
       </div>
       <div className="mt-8 grid md:grid-cols-3 gap-6">
         {news.map((n) => (
-          <Link key={n.slug} href={`/news/${n.slug}`} className="group border border-slate-200 bg-white overflow-hidden hover-lift">
+          <Link key={n.slug} href={`/news/${n.slug}`} className="group rounded-xl border border-slate-200 bg-white overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
             <div className="aspect-[16/10] relative overflow-hidden bg-slate-100 border-b">
               <Image src={miningImages.lab} alt={n.title} fill className="object-cover group-hover:scale-105 transition-transform duration-700" unoptimized />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
@@ -184,24 +184,40 @@ function ConsultancyHighlights() {
   return (
     <section className="mx-auto max-w-7xl px-6 lg:px-8 pb-6">
       <div className="grid lg:grid-cols-12 gap-6">
-        <div className="lg:col-span-7 bg-white border border-slate-200 p-8 lg:p-10">
+        <div className="lg:col-span-7 bg-white rounded-xl border border-slate-200 p-8 lg:p-10 shadow-sm">
           <p className="text-[11px] tracking-[0.18em] text-[#0F4A6B] font-bold">WHY MOB</p>
           <h3 className="font-serif text-2xl font-bold tracking-tight mt-2 leading-tight">Technical rigour. Commercial clarity.</h3>
-          <p className="mt-4 text-[14px] leading-7 text-slate-600">We combine field geology, JORC-compliant modelling and DRA-style mine planning with Zambian permitting expertise. Your study stands up to lenders, boards and regulators.</p>
+          <p className="mt-4 text-[14px] leading-7 text-slate-600">We combine field geology, JORC-compliant modelling and DRA-style mine planning with Malawian permitting expertise. Your study stands up to lenders, boards and regulators.</p>
           <div className="mt-6 grid sm:grid-cols-2 gap-4 text-sm">
-            <div className="flex gap-3"><span className="h-6 w-6 bg-[#0F4A6B]/10 text-[#0F4A6B] flex items-center justify-center text-xs shrink-0">✓</span><span>Exploration targeting & QA/QC</span></div>
-            <div className="flex gap-3"><span className="h-6 w-6 bg-[#0F4A6B]/10 text-[#0F4A6B] flex items-center justify-center text-xs shrink-0">✓</span><span>3D resource models (Leapfrog/Isatis)</span></div>
-            <div className="flex gap-3"><span className="h-6 w-6 bg-[#0F4A6B]/10 text-[#0F4A6B] flex items-center justify-center text-xs shrink-0">✓</span><span>Pit optimisation & reserves</span></div>
-            <div className="flex gap-3"><span className="h-6 w-6 bg-[#0F4A6B]/10 text-[#0F4A6B] flex items-center justify-center text-xs shrink-0">✓</span><span>ESIA, RAP & stakeholder</span></div>
+            {[
+              "Exploration targeting & QA/QC",
+              "3D resource models (Leapfrog/Isatis)",
+              "Pit optimisation & reserves",
+              "ESIA, RAP & stakeholder",
+            ].map((item) => (
+              <div key={item} className="flex gap-3">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#0F4A6B]/10 text-[#0F4A6B] text-xs shrink-0 mt-0.5">
+                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </span>
+                <span className="text-slate-700">{item}</span>
+              </div>
+            ))}
           </div>
           <Link href="/about" className="mt-8 inline-flex text-[13px] font-bold tracking-wide text-[#0F4A6B] hover:underline underline-offset-4">Learn about Mob →</Link>
         </div>
-        <div className="lg:col-span-5 bg-[#0F4A6B] text-white p-8 lg:p-10 relative overflow-hidden">
-          <div className="absolute -right-10 -bottom-10 opacity-10"><svg width="220" height="140" viewBox="0 0 220 140"><path d="M0 110 L60 30 L85 22 L40 110 Z" fill="white" /><path d="M40 110 L85 22 L105 45 L130 12 L180 110 Z" fill="white" /></svg></div>
+        <div className="lg:col-span-5 bg-[#0F4A6B] text-white p-8 lg:p-10 rounded-xl relative overflow-hidden shadow-sm">
+          <div className="absolute -right-10 -bottom-10 opacity-10">
+            <svg width="220" height="140" viewBox="0 0 220 140">
+              <path d="M0 110 L60 30 L85 22 L40 110 Z" fill="white" />
+              <path d="M40 110 L85 22 L105 45 L130 12 L180 110 Z" fill="white" />
+            </svg>
+          </div>
           <h3 className="font-serif text-2xl font-bold leading-tight relative">Start a project <br />with Mob</h3>
           <p className="mt-3 text-[14px] leading-6 text-white/80 relative">Scoping, PEA, PFS or FS — talk to our principal consultants. Response within one business day.</p>
-          <Link href="/contact" className="mt-8 inline-flex h-11 px-7 items-center bg-white text-[#0F4A6B] text-[13px] font-bold tracking-wide hover:bg-white/90 transition relative">Contact Us</Link>
-          <Link href="/careers" className="mt-3 block text-sm text-white/70 hover:text-white transition relative">Join Mob — we’re hiring →</Link>
+          <Link href="/contact" className="mt-8 inline-flex h-11 px-7 items-center rounded-lg bg-white text-[#0F4A6B] text-[13px] font-bold tracking-wide hover:bg-white/90 transition relative">Contact Us</Link>
+          <Link href="/careers" className="mt-3 block text-sm text-white/70 hover:text-white transition relative">Join Mob — we're hiring →</Link>
         </div>
       </div>
     </section>
@@ -213,7 +229,7 @@ function TrustBar() {
     <section className="border-t border-slate-200 bg-white">
       <div className="mx-auto max-w-7xl px-6 lg:px-8 py-6 flex flex-wrap items-center justify-between gap-4 text-xs tracking-[0.14em] text-slate-500">
         <span>TRUSTED BY JUNIORS • MAJORS • FUNDS • DEVELOPMENT BANKS</span>
-        <span className="flex gap-6 font-medium"><span>Zambia</span><span>DRC</span><span>Botswana</span><span>Tanzania</span></span>
+        <span className="flex gap-6 font-medium"><span>Malawi</span><span>Zambia</span><span>DRC</span><span>Mozambique</span><span>Tanzania</span></span>
       </div>
     </section>
   );
