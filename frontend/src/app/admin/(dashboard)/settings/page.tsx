@@ -112,7 +112,21 @@ export default function SettingsAdmin() {
     try {
       const asset = await uploadMedia(file, "branding");
       setDrafts((d) => ({ ...d, [row.key]: asset.path }));
-      setOk(`Uploaded ${asset.file_name} — press Save to apply`);
+      setSaving(row.key);
+      setErr(null);
+      try {
+        const updated = await adminFetch<{ data: SiteSetting }>(
+          `/admin/site-settings/${encodeURIComponent(row.key)}`,
+          { method: "PUT", json: { value: asset.path, type: row.type, group: row.group, description: row.description, is_public: row.is_public } }
+        );
+        setRows((rs) => rs.map((r) => (r.key === row.key ? updated.data : r)));
+        setOk(`Uploaded & applied ${asset.file_name}`);
+        void revalidateTags(["settings"]);
+      } catch (e2) {
+        setErr(e2 instanceof Error ? e2.message : "Upload failed");
+      } finally {
+        setSaving(null);
+      }
     } catch (e2) {
       setErr(e2 instanceof Error ? e2.message : "Upload failed");
     } finally {
