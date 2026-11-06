@@ -1,4 +1,4 @@
-import { revalidateTag } from "next/cache";
+import { revalidateTag, revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 import { apiBaseUrl } from "@/lib/api";
 
@@ -27,7 +27,14 @@ export async function POST(req: NextRequest) {
   const tags: string[] = Array.isArray(body.tags) && body.tags.length ? body.tags : ["settings"];
 
   for (const tag of tags) {
-    (revalidateTag as unknown as (t: string) => void)(tag);
+    revalidateTag(tag, "max");
+    if (tag === "settings") revalidatePath("/", "layout");
+    else if (tag.startsWith("page:")) {
+      const slug = tag.slice("page:".length);
+      revalidatePath(slug ? `/${slug}` : "/");
+    } else {
+      revalidatePath("/");
+    }
   }
 
   return NextResponse.json({ revalidated: true, tags });

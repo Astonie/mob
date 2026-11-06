@@ -13,10 +13,14 @@ export async function POST(req: NextRequest) {
 
   if (tag) {
     revalidateTag(tag, "max");
-    // Also bust the full-route cache for the matching page so edits show immediately.
+    // Bust the full-route cache so edits show immediately (not just the data cache).
     if (tag.startsWith("page:")) {
       const slug = tag.slice("page:".length);
       revalidatePath(slug ? `/${slug}` : "/");
+    } else if (tag === "settings") {
+      revalidatePath("/", "layout");
+    } else {
+      revalidatePath("/");
     }
   }
   if (path) revalidatePath(path);
