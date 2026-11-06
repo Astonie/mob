@@ -42,7 +42,7 @@ export function MobLogo({
           alt="Mob Limited"
           width={200}
           height={130}
-          className={`h-12 w-auto shrink-0 object-contain ${className}`}
+          className={`h-14 w-auto shrink-0 object-contain ${className}`}
           unoptimized
         />
       );
@@ -72,7 +72,7 @@ export function MobLogo({
         alt="Mob Limited"
         width={200}
         height={130}
-        className={`h-12 w-auto shrink-0 object-contain ${className}`}
+        className={`h-14 w-auto shrink-0 object-contain ${className}`}
         unoptimized
       />
     );
