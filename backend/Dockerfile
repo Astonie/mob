@@ -8,7 +8,7 @@ RUN apk add --no-cache \
 COPY docker/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
- && docker-php-ext-install -j$(nproc) pdo pdo_pgsql pgsql zip intl gd opcache bcmath
+ && docker-php-ext-install -j$(nproc) pdo pdo_pgsql pgsql pdo_mysql mysqli zip intl gd opcache bcmath
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
