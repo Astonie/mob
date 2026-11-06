@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { MobLogo } from "@/components/ui/logo";
 import { MobileMenu } from "./MobileMenu";
@@ -9,31 +9,72 @@ import { SearchOverlay } from "./SearchOverlay";
 export interface NavItem {
   title: string;
   url: string;
+  children?: NavItem[];
 }
 
-export function HeaderClient({ items }: { items: NavItem[] }) {
+export interface LogoProps {
+  logoLight?: string;
+  logoDark?: string;
+  logoIcon?: string;
+}
+
+export function HeaderClient({ items, logos }: { items: NavItem[]; logos?: LogoProps }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <>
-      <header className="sticky top-0 z-50 border-b border-slate-200/70 bg-white/90 backdrop-blur-xl supports-[backdrop-filter]:bg-white/80">
+      <header className={`sticky top-0 z-50 border-b transition-all duration-300 ${scrolled ? "border-slate-200 bg-white/95 shadow-[0_8px_30px_-12px_rgba(15,74,107,0.25)] backdrop-blur-xl" : "border-slate-200/70 bg-white/90 backdrop-blur-xl supports-[backdrop-filter]:bg-white/80"}`}>
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="flex h-[78px] items-center justify-between gap-8">
+          <div className={`flex items-center justify-between gap-8 transition-all duration-300 ${scrolled ? "h-[64px]" : "h-[78px]"}`}>
             <Link href="/" className="flex items-center shrink-0">
-              <MobLogo />
+              <MobLogo {...logos} />
             </Link>
 
             <nav className="hidden lg:flex items-center gap-1">
               {items.map((item) => (
-                <Link
-                  key={item.title}
-                  href={item.url || "#"}
-                  className="relative px-3.5 py-2 text-[13.5px] font-medium tracking-wide text-slate-700 hover:text-[#0F4A6B] transition-colors group"
-                >
-                  {item.title}
-                  <span className="absolute inset-x-3 -bottom-1 h-px scale-x-0 bg-[#0F4A6B] transition-transform group-hover:scale-x-100" />
-                </Link>
+                item.children?.length ? (
+                  <div key={item.title} className="relative group">
+                    <button
+                      className="relative px-3.5 py-2 text-[13.5px] font-medium tracking-wide text-slate-700 hover:text-[#0F4A6B] transition-colors flex items-center gap-1"
+                    >
+                      {item.title}
+                      <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    <div className="absolute left-0 top-full z-50 hidden min-w-[180px] pt-1 group-hover:block">
+                      <div className="rounded-lg border border-slate-200 bg-white py-1 shadow-lg">
+                        {item.children.map((c) => (
+                          <Link
+                            key={c.title}
+                            href={c.url || "#"}
+                            className="block px-4 py-2 text-[13px] font-medium text-slate-700 hover:bg-slate-50 hover:text-[#0F4A6B]"
+                          >
+                            {c.title}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <Link
+                    key={item.title}
+                    href={item.url || "#"}
+                    className="relative px-3.5 py-2 text-[13.5px] font-medium tracking-wide text-slate-700 hover:text-[#0F4A6B] transition-colors group"
+                  >
+                    {item.title}
+                    <span className="absolute inset-x-3 -bottom-1 h-px scale-x-0 bg-[#0F4A6B] transition-transform group-hover:scale-x-100" />
+                  </Link>
+                )
               ))}
             </nav>
 
@@ -63,7 +104,7 @@ export function HeaderClient({ items }: { items: NavItem[] }) {
           </div>
         </div>
       </header>
-      <MobileMenu items={items} isOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
+      <MobileMenu items={items} logos={logos} isOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
       <SearchOverlay isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
   );

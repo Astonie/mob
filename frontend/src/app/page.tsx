@@ -1,38 +1,46 @@
 import Link from "next/link";
 import Image from "next/image";
 import { BlockRenderer } from "@/components/blocks/BlockRenderer";
-import { getPage, getProjects, getMinerals, getNews } from "@/lib/api";
+import { BrandValuesSection, CoreServicesSection, ValueChainSection } from "@/components/sections/BrandSections";
+import { getPage, getProjects, getMinerals, getNews, getSiteSettingsSafe, settingArray, settingString, mediaSrc, type SiteSettings } from "@/lib/api";
 import { formatDate } from "@/lib/utils";
 import { miningImages, getProjectImage, mineralImages } from "@/lib/images";
 
 export const revalidate = 3600;
 
 async function getHomeData() {
-  try {
-    const [pageRes, projectsRes, mineralsRes, newsRes] = await Promise.all([
-      getPage("home"),
-      getProjects("per_page=3&featured=1"),
-      getMinerals(),
-      getNews("per_page=3&featured=1"),
-    ]);
-    return { page: pageRes.data, projects: projectsRes.data, minerals: mineralsRes, news: newsRes.data };
-  } catch {
-    return { page: null, projects: [], minerals: null, news: [] };
-  }
+  const results = await Promise.allSettled([
+    getPage("home"),
+    getProjects("per_page=3&featured=1"),
+    getMinerals(),
+    getNews("per_page=3&featured=1"),
+    getSiteSettingsSafe(),
+  ]);
+  const [pageRes, projectsRes, mineralsRes, newsRes, settingsRes] = results;
+  return {
+    page: pageRes.status === "fulfilled" ? pageRes.value.data : null,
+    projects: projectsRes.status === "fulfilled" ? projectsRes.value.data : [],
+    minerals: mineralsRes.status === "fulfilled" ? mineralsRes.value : null,
+    news: newsRes.status === "fulfilled" ? newsRes.value.data : [],
+    settings: settingsRes.status === "fulfilled" ? settingsRes.value : null,
+  };
 }
 
 export default async function HomePage() {
-  const { page, projects, minerals, news } = await getHomeData();
+  const { page, projects, minerals, news, settings } = await getHomeData();
 
   if (page) {
     return (
       <>
         <BlockRenderer blocks={page.blocks} />
-        <FeaturedProjects projects={projects} />
-        <MineralsStrip minerals={minerals} />
-        <LatestNews news={news} />
-        <ConsultancyHighlights />
-        <TrustBar />
+        <ValueChainSection />
+        <CoreServicesSection />
+        <FeaturedProjects projects={projects} settings={settings} />
+        <MineralsStrip minerals={minerals} settings={settings} />
+        <BrandValuesSection />
+        <LatestNews news={news} settings={settings} />
+        <ConsultancyHighlights settings={settings} />
+        <TrustBar settings={settings} />
       </>
     );
   }
@@ -41,7 +49,7 @@ export default async function HomePage() {
     <>
       <section className="relative overflow-hidden bg-[#061a2a]">
         <div className="absolute inset-0">
-          <Image src={miningImages.hero} alt="Open pit mine Malawi SADC" fill className="object-cover opacity-35" unoptimized />
+          <Image src={mediaSrc(settingString(settings, "appearance.hero_bg", "")) || miningImages.hero} alt="Open pit mine Malawi SADC" fill className="object-cover opacity-35" unoptimized />
           <div className="absolute inset-0 bg-gradient-to-br from-[#0a2e4a]/90 via-[#0F4A6B]/85 to-[#061a2a]/90" />
         </div>
         <svg className="absolute bottom-0 left-0 right-0 w-full h-[42%] opacity-[0.08] pointer-events-none" viewBox="0 0 1440 320" preserveAspectRatio="none">
@@ -59,7 +67,7 @@ export default async function HomePage() {
               Malawi-based, SADC-wide — from greenfield exploration in Lilongwe to mine development across Zambia, DRC, Mozambique & Tanzania. JORC, NI 43-101 & SAMREC compliant. 120+ projects.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
-              <Link href="/projects" className="h-[46px] px-8 inline-flex items-center rounded-lg bg-white text-[#0F4A6B] text-[13px] font-bold tracking-wide hover:bg-white/90 transition shadow-lg">Explore Services</Link>
+              <Link href="/services" className="h-[46px] px-8 inline-flex items-center rounded-lg bg-white text-[#0F4A6B] text-[13px] font-bold tracking-wide hover:bg-white/90 transition shadow-lg">Explore Services</Link>
               <Link href="/contact" className="h-[46px] px-8 inline-flex items-center rounded-lg border border-white/30 text-white text-[13px] font-semibold tracking-wide hover:bg-white/10 backdrop-blur">Contact Lilongwe HQ</Link>
             </div>
             <div className="mt-10 flex flex-wrap gap-6 text-[11px] tracking-[0.16em] text-white/60">
@@ -84,21 +92,29 @@ export default async function HomePage() {
           ))}
         </div>
       </section>
+
+      <ValueChainSection />
+      <CoreServicesSection />
+      <BrandValuesSection />
     </>
   );
 }
 
-function FeaturedProjects({ projects }: { projects: unknown[] }) {
+function FeaturedProjects({ projects, settings }: { projects: unknown[]; settings: SiteSettings | null }) {
   if (!projects?.length) return null;
+  const eyebrow = settingString(settings, "content.home_work_eyebrow", "SELECTED WORK");
+  const title = settingString(settings, "content.home_work_title", "From discovery to development");
+  const body = settingString(settings, "content.home_work_body", "Technical excellence across exploration, resource modelling, mine planning and ESG — trusted by juniors, majors and funds.");
+  const link = settingString(settings, "content.home_work_link", "View all projects →");
   return (
     <section className="mx-auto max-w-7xl px-6 lg:px-8 py-14">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-[11px] tracking-[0.18em] text-[#0F4A6B] font-bold">SELECTED WORK</p>
-          <h2 className="font-serif text-[32px] font-bold tracking-tight leading-none mt-2">From discovery to development</h2>
-          <p className="text-sm text-slate-600 mt-3 max-w-2xl">Technical excellence across exploration, resource modelling, mine planning and ESG — trusted by juniors, majors and funds.</p>
+          <p className="text-[11px] tracking-[0.18em] text-[#0F4A6B] font-bold">{eyebrow}</p>
+          <h2 className="font-serif text-[32px] font-bold tracking-tight leading-none mt-2">{title}</h2>
+          <p className="text-sm text-slate-600 mt-3 max-w-2xl">{body}</p>
         </div>
-        <Link href="/projects" className="text-[13px] font-semibold text-[#0F4A6B] hover:underline underline-offset-4">View all projects →</Link>
+        <Link href="/services" className="text-[13px] font-semibold text-[#0F4A6B] hover:underline underline-offset-4">{link}</Link>
       </div>
       <div className="mt-10 grid md:grid-cols-3 gap-6">
         {(projects as Array<{ name: string; slug: string; summary: string; status: string; location: { name: string } | null }>).map((p) => (
@@ -121,15 +137,17 @@ function FeaturedProjects({ projects }: { projects: unknown[] }) {
   );
 }
 
-function MineralsStrip({ minerals }: { minerals: unknown }) {
+function MineralsStrip({ minerals, settings }: { minerals: unknown; settings: SiteSettings | null }) {
   const list = (minerals as { data?: Array<{ name: string; slug: string; chemical_symbol: string; summary: string }> })?.data ?? [];
   if (!list.length) return null;
+  const title = settingString(settings, "content.home_minerals_title", "Commodities we sign off");
+  const link = settingString(settings, "content.home_minerals_link", "All minerals →");
   return (
     <section className="bg-[#f8f9fb] border-y border-slate-200">
       <div className="mx-auto max-w-7xl px-6 lg:px-8 py-14">
         <div className="flex items-baseline justify-between gap-4">
-          <h2 className="font-serif text-2xl font-bold tracking-tight">Commodities we sign off</h2>
-          <Link href="/minerals" className="text-sm font-semibold text-[#0F4A6B] hover:underline">All minerals →</Link>
+          <h2 className="font-serif text-2xl font-bold tracking-tight">{title}</h2>
+          <Link href="/services" className="text-sm font-semibold text-[#0F4A6B] hover:underline">{link}</Link>
         </div>
         <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {list.slice(0, 4).map((m) => {
@@ -153,13 +171,15 @@ function MineralsStrip({ minerals }: { minerals: unknown }) {
   );
 }
 
-function LatestNews({ news }: { news: Array<{ title: string; slug: string; excerpt: string | null; published_at: string | null; category: { name: string } | null }> }) {
+function LatestNews({ news, settings }: { news: Array<{ title: string; slug: string; excerpt: string | null; published_at: string | null; category: { name: string } | null }>; settings: SiteSettings | null }) {
   if (!news?.length) return null;
+  const title = settingString(settings, "content.home_news_title", "Insights");
+  const link = settingString(settings, "content.home_news_link", "All insights →");
   return (
     <section className="mx-auto max-w-7xl px-6 lg:px-8 py-14">
       <div className="flex items-end justify-between">
-        <h2 className="font-serif text-2xl font-bold tracking-tight">Insights</h2>
-        <Link href="/news" className="text-sm font-semibold text-[#0F4A6B] hover:underline">All insights →</Link>
+        <h2 className="font-serif text-2xl font-bold tracking-tight">{title}</h2>
+        <Link href="/news" className="text-sm font-semibold text-[#0F4A6B] hover:underline">{link}</Link>
       </div>
       <div className="mt-8 grid md:grid-cols-3 gap-6">
         {news.map((n) => (
@@ -180,21 +200,31 @@ function LatestNews({ news }: { news: Array<{ title: string; slug: string; excer
   );
 }
 
-function ConsultancyHighlights() {
+function ConsultancyHighlights({ settings }: { settings: SiteSettings | null }) {
+  const eyebrow = settingString(settings, "content.home_why_eyebrow", "WHY MOB");
+  const title = settingString(settings, "content.home_why_title", "Technical rigour. Commercial clarity.");
+  const body = settingString(settings, "content.home_why_body", "We combine field geology, JORC-compliant modelling and DRA-style mine planning with Malawian permitting expertise. Your study stands up to lenders, boards and regulators.");
+  const items = settingArray(settings, "content.home_why_items", [
+    "Exploration targeting & QA/QC",
+    "3D resource models (Leapfrog/Isatis)",
+    "Pit optimisation & reserves",
+    "ESIA, RAP & stakeholder",
+  ]);
+  const whyLink = settingString(settings, "content.home_why_link", "Learn about Mob →");
+  const ctaTitle = settingString(settings, "content.home_cta_title", "Start a project\nwith Mob");
+  const ctaBody = settingString(settings, "content.home_cta_body", "Scoping, PEA, PFS or FS — talk to our principal consultants. Response within one business day.");
+  const ctaBtn1 = settingString(settings, "content.home_cta_btn1", "Contact Us");
+  const ctaBtn2 = settingString(settings, "content.home_cta_btn2", "Join Mob — we're hiring →");
+
   return (
     <section className="mx-auto max-w-7xl px-6 lg:px-8 pb-6">
       <div className="grid lg:grid-cols-12 gap-6">
         <div className="lg:col-span-7 bg-white rounded-xl border border-slate-200 p-8 lg:p-10 shadow-sm">
-          <p className="text-[11px] tracking-[0.18em] text-[#0F4A6B] font-bold">WHY MOB</p>
-          <h3 className="font-serif text-2xl font-bold tracking-tight mt-2 leading-tight">Technical rigour. Commercial clarity.</h3>
-          <p className="mt-4 text-[14px] leading-7 text-slate-600">We combine field geology, JORC-compliant modelling and DRA-style mine planning with Malawian permitting expertise. Your study stands up to lenders, boards and regulators.</p>
+          <p className="text-[11px] tracking-[0.18em] text-[#0F4A6B] font-bold">{eyebrow}</p>
+          <h3 className="font-serif text-2xl font-bold tracking-tight mt-2 leading-tight">{title}</h3>
+          <p className="mt-4 text-[14px] leading-7 text-slate-600">{body}</p>
           <div className="mt-6 grid sm:grid-cols-2 gap-4 text-sm">
-            {[
-              "Exploration targeting & QA/QC",
-              "3D resource models (Leapfrog/Isatis)",
-              "Pit optimisation & reserves",
-              "ESIA, RAP & stakeholder",
-            ].map((item) => (
+            {items.map((item) => (
               <div key={item} className="flex gap-3">
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#0F4A6B]/10 text-[#0F4A6B] text-xs shrink-0 mt-0.5">
                   <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
@@ -205,7 +235,7 @@ function ConsultancyHighlights() {
               </div>
             ))}
           </div>
-          <Link href="/about" className="mt-8 inline-flex text-[13px] font-bold tracking-wide text-[#0F4A6B] hover:underline underline-offset-4">Learn about Mob →</Link>
+          <Link href="/about" className="mt-8 inline-flex text-[13px] font-bold tracking-wide text-[#0F4A6B] hover:underline underline-offset-4">{whyLink}</Link>
         </div>
         <div className="lg:col-span-5 bg-[#0F4A6B] text-white p-8 lg:p-10 rounded-xl relative overflow-hidden shadow-sm">
           <div className="absolute -right-10 -bottom-10 opacity-10">
@@ -214,22 +244,28 @@ function ConsultancyHighlights() {
               <path d="M40 110 L85 22 L105 45 L130 12 L180 110 Z" fill="white" />
             </svg>
           </div>
-          <h3 className="font-serif text-2xl font-bold leading-tight relative">Start a project <br />with Mob</h3>
-          <p className="mt-3 text-[14px] leading-6 text-white/80 relative">Scoping, PEA, PFS or FS — talk to our principal consultants. Response within one business day.</p>
-          <Link href="/contact" className="mt-8 inline-flex h-11 px-7 items-center rounded-lg bg-white text-[#0F4A6B] text-[13px] font-bold tracking-wide hover:bg-white/90 transition relative">Contact Us</Link>
-          <Link href="/careers" className="mt-3 block text-sm text-white/70 hover:text-white transition relative">Join Mob — we're hiring →</Link>
+          <h3 className="font-serif text-2xl font-bold leading-tight relative">
+            {ctaTitle.split(/\r?\n/).map((line, i) => (
+              <span key={line + i}>{i > 0 && <br />}{line}</span>
+            ))}
+          </h3>
+          <p className="mt-3 text-[14px] leading-6 text-white/80 relative">{ctaBody}</p>
+          <Link href="/contact" className="mt-8 inline-flex h-11 px-7 items-center rounded-lg bg-white text-[#0F4A6B] text-[13px] font-bold tracking-wide hover:bg-white/90 transition relative">{ctaBtn1}</Link>
+          <Link href="/careers" className="mt-3 block text-sm text-white/70 hover:text-white transition relative">{ctaBtn2}</Link>
         </div>
       </div>
     </section>
   );
 }
 
-function TrustBar() {
+function TrustBar({ settings }: { settings: SiteSettings | null }) {
+  const label = settingString(settings, "content.home_trust_label", "TRUSTED BY JUNIORS • MAJORS • FUNDS • DEVELOPMENT BANKS");
+  const countries = settingArray(settings, "content.home_trust_countries", ["Malawi", "Zambia", "DRC", "Mozambique", "Tanzania"]);
   return (
     <section className="border-t border-slate-200 bg-white">
       <div className="mx-auto max-w-7xl px-6 lg:px-8 py-6 flex flex-wrap items-center justify-between gap-4 text-xs tracking-[0.14em] text-slate-500">
-        <span>TRUSTED BY JUNIORS • MAJORS • FUNDS • DEVELOPMENT BANKS</span>
-        <span className="flex gap-6 font-medium"><span>Malawi</span><span>Zambia</span><span>DRC</span><span>Mozambique</span><span>Tanzania</span></span>
+        <span>{label}</span>
+        <span className="flex gap-6 font-medium">{countries.map((c) => <span key={c}>{c}</span>)}</span>
       </div>
     </section>
   );

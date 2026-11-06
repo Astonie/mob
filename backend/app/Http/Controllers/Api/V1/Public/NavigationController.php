@@ -13,7 +13,9 @@ class NavigationController extends Controller
     {
         $slug = $request->query('menu', 'main');
         $menu = NavigationMenu::with(['items' => function ($q) {
-            $q->whereNull('parent_id')->with('children')->orderBy('sort_order');
+            $q->whereNull('parent_id')->where('is_active', true)->with(['children' => function ($c) {
+                $c->where('is_active', true)->orderBy('sort_order');
+            }])->orderBy('sort_order');
         }])
             ->where('slug', $slug)->where('is_active', true)->firstOrFail();
 

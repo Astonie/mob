@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1\Public;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class HealthController extends Controller
 {
@@ -33,7 +34,9 @@ class HealthController extends Controller
 
             return ['status' => 'ok', 'latency_ms' => 1];
         } catch (\Throwable $e) {
-            return ['status' => 'error', 'message' => $e->getMessage()];
+            Log::error('Health check: database unavailable', ['exception' => $e]);
+
+            return ['status' => 'error'];
         }
     }
 
@@ -45,7 +48,9 @@ class HealthController extends Controller
 
             return ['status' => $val === 'ok' ? 'ok' : 'error'];
         } catch (\Throwable $e) {
-            return ['status' => 'error', 'message' => $e->getMessage()];
+            Log::error('Health check: cache unavailable', ['exception' => $e]);
+
+            return ['status' => 'error'];
         }
     }
 }

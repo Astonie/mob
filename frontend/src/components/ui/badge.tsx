@@ -6,7 +6,7 @@ const badgeVariants = cva("inline-flex items-center rounded-full px-2.5 py-0.5 t
   variants: {
     variant: {
       default: "bg-slate-900 text-white",
-      primary: "bg-[#0F4A6B] text-white",
+      primary: "bg-gradient-to-r from-[#0F4A6B] to-[#0d3f5d] text-white shadow-[0_6px_20px_-10px_rgba(15,74,107,0.9)]",
       secondary: "bg-slate-100 text-slate-900",
       accent: "bg-[#e6f0f6] text-[#0F4A6B] border border-[#0F4A6B]/20",
       success: "bg-emerald-100 text-emerald-800 border border-emerald-200",

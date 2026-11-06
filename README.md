@@ -1,4 +1,4 @@
-# Zambia Mining Corporation — Enterprise Platform
+# Mob Limited — Enterprise Platform
 
 Production-ready, content-driven corporate platform for a modern mining company. **Custom CMS + public website** with secure APIs, SEO, and scalable architecture.
 
@@ -223,7 +223,7 @@ See Architecture Blueprint (Phase 1) for full ERD, module breakdown, RBAC model,
 
 ## License
 
-Proprietary — Zambia Mining Corporation. Demo seed data is synthetic but realistic (Kansanshi, Trident, Mushima) — not Lorem Ipsum.
+Proprietary — Mob Limited (Lilongwe, Malawi). Demo seed data is synthetic but realistic (Kansanshi, Trident, Mushima) — not Lorem Ipsum.
 
 ---
 

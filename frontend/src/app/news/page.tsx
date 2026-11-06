@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getNews } from "@/lib/api";
+import { getPage, getNews, getSiteSettingsSafe, settingString } from "@/lib/api";
 import { formatDate } from "@/lib/utils";
+import { BlockRenderer } from "@/components/blocks/BlockRenderer";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { ListSkeleton, EmptyState } from "@/components/ui/Skeleton";
 
@@ -9,18 +10,21 @@ export const revalidate = 600;
 export const metadata = { title: "News & Media | Mob Limited", description: "Press releases, operational updates and ESG stories from Mob Limited across the SADC region." };
 
 export default async function NewsPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
+  const cmsPage = await getPage("news").then((r) => r.data).catch(() => null);
+  if (cmsPage) return <BlockRenderer blocks={cmsPage.blocks} />;
   const { page } = await searchParams;
   let data = null;
   try {
     data = await getNews(page ? `page=${page}` : undefined);
   } catch {}
   const articles = data?.data ?? [];
+  const settings = await getSiteSettingsSafe().catch(() => null);
 
   return (
     <div>
       <PageHeader
-        title="News & Media"
-        subtitle="Press releases, operational updates and ESG stories from across the SADC region."
+        title={settingString(settings, "content.news_hero_title", "News & Media")}
+        subtitle={settingString(settings, "content.news_hero_subtitle", "Press releases, operational updates and ESG stories from across the SADC region.")}
         breadcrumbs={[{ label: "News" }]}
       />
       <div className="mx-auto max-w-7xl px-6 lg:px-8 py-12">

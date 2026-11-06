@@ -6,6 +6,7 @@ use App\Enums\ContentStatus;
 use App\Models\NewsArticle;
 use App\Models\Page;
 use App\Models\Project;
+use App\Support\Revalidate;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
@@ -85,20 +86,28 @@ class PublishingService
             Project::class,
         ];
 
-        foreach ($models as $class) {
-            $due = $class::where('status', ContentStatus::Scheduled->value)
-                ->orWhere('content_status', ContentStatus::Scheduled->value)
-                ->where('scheduled_at', '<=', now())
-                ->get();
+        $previous = Revalidate::$force;
+        Revalidate::$force = true;
+        try {
+            foreach ($models as $class) {
+                $due = $class::where(function ($query) {
+                    $query->where('status', ContentStatus::Scheduled->value)
+                        ->orWhere('content_status', ContentStatus::Scheduled->value);
+                })
+                    ->where('scheduled_at', '<=', now())
+                    ->get();
 
-            foreach ($due as $model) {
-                $model->update([
-                    'status' => ContentStatus::Published->value,
-                    'content_status' => ContentStatus::Published->value,
-                    'published_at' => now(),
-                ]);
-                $count++;
+                foreach ($due as $model) {
+                    $model->update([
+                        'status' => ContentStatus::Published->value,
+                        'content_status' => ContentStatus::Published->value,
+                        'published_at' => now(),
+                    ]);
+                    $count++;
+                }
             }
+        } finally {
+            Revalidate::$force = $previous;
         }
 
         return $count;

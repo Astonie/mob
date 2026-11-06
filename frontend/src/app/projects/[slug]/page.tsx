@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { getProject } from "@/lib/api";
-import { PageHeader } from "@/components/ui/PageHeader";
 import { getProjectImage } from "@/lib/images";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 export const revalidate = 3600;
 
@@ -39,7 +40,7 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
     <div>
       <div className="relative overflow-hidden bg-[#0a1f2e]">
         <div className="absolute inset-0">
-          <img src={getProjectImage(project.slug)} alt="" className="object-cover opacity-20" />
+          <Image src={getProjectImage(project.slug)} alt="" fill priority sizes="100vw" className="object-cover opacity-20" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#0a1f2e] via-[#0a1f2e]/80 to-transparent" />
         </div>
         <div className="relative mx-auto max-w-7xl px-6 lg:px-8 py-12 lg:py-16">
@@ -68,7 +69,7 @@ export default async function ProjectDetail({ params }: { params: Promise<{ slug
           <div className="lg:col-span-2 space-y-8">
             <div>
               <h2 className="font-serif text-2xl font-bold text-[#0a1f2e]">Overview</h2>
-              <div className="prose prose-slate mt-4 max-w-none text-[15px] leading-7 text-slate-700" dangerouslySetInnerHTML={{ __html: project.description || "<p>No description available.</p>" }} />
+              <div className="prose prose-slate mt-4 max-w-none text-[15px] leading-7 text-slate-700" dangerouslySetInnerHTML={{ __html: sanitizeHtml(project.description) || "<p>No description available.</p>" }} />
             </div>
           </div>
           <aside className="space-y-6">

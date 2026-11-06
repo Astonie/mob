@@ -1,10 +1,11 @@
 import type { MetadataRoute } from "next";
+import { apiBaseUrl } from "@/lib/api";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-  const api = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  const api = apiBaseUrl();
   const title = "Mob Limited — Integrated Mining and Mineral Consultancy";
-  const staticPages = ["", "/about", "/projects", "/minerals", "/news", "/careers", "/sustainability", "/contact", "/search"];
+  const staticPages = ["", "/about", "/services", "/team", "/news", "/careers", "/contact", "/search"];
   let dynamic: MetadataRoute.Sitemap = [];
   try {
     const [projects, minerals, news] = await Promise.all([

@@ -1,41 +1,44 @@
-"use client";
-
-import { useState } from "react";
 import Image from "next/image";
 import { miningImages } from "@/lib/images";
+import { BlockRenderer } from "@/components/blocks/BlockRenderer";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { brand } from "@/lib/brand";
+import { getPage, getSiteSettingsSafe, getFaqsSafe, settingString, settingLines } from "@/lib/api";
+import { ContactForm } from "./contact-form";
 
-export default function Contact() {
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [formData, setFormData] = useState({ name: "", email: "", company: "", service: "", message: "", website: "" });
+export const revalidate = 3600;
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus("loading");
-    try {
-      const res = await fetch("/api/v1/contact-submissions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      if (res.ok) {
-        setStatus("success");
-        setFormData({ name: "", email: "", company: "", service: "", message: "", website: "" });
-      } else {
-        setStatus("error");
-      }
-    } catch {
-      setStatus("error");
-    }
-  };
+export const metadata = { title: "Contact — Lilongwe HQ | Mob Limited", description: "Reach Mob Limited's Lilongwe head office and SADC hubs. Response to enquiries within one business day." };
 
-  const inputClass = "w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#0F4A6B] focus:outline-none focus:ring-2 focus:ring-[#0F4A6B]/20 transition-all";
+export default async function Contact() {
+  const cmsPage = await getPage("contact").then((r) => r.data).catch(() => null);
+  if (cmsPage) return <BlockRenderer blocks={cmsPage.blocks} />;
+  const [settings, faqs] = await Promise.all([getSiteSettingsSafe(), getFaqsSafe()]);
+
+  const heroTitle = settingString(settings, "content.contact_hero_title", "Contact — Lilongwe HQ");
+  const heroSubtitle = settingString(settings, "content.contact_hero_subtitle", "Malawi-based, SADC-wide. Reach our Lilongwe, Blantyre, Karonga, Kolwezi, Solwezi teams.");
+  const visitTitle = settingString(settings, "content.contact_visit_title", "Visit Us");
+  const officeLabel = settingString(settings, "content.contact_head_office_label", "Head Office — Lilongwe");
+  const address = settingString(settings, "site.address", "Area 47 Sector 3, Lilongwe, Malawi").split(/,\s*/);
+  const phone = settingString(settings, "site.phone", brand.phone);
+  const email = settingString(settings, "site.email", brand.email);
+  const hubsLabel = settingString(settings, "content.contact_hubs_label", "SADC Hubs");
+  const hubs = settingLines(settings, "content.contact_hubs", [
+    "Blantyre (Malawi) • Karonga (Kayelekera)",
+    "Kolwezi (DRC) • Solwezi (Zambia)",
+    "Balama (Mozambique) • Windhoek (Namibia)",
+    "Johannesburg (South Africa)",
+  ]);
+  const mapCaption = settingString(settings, "content.contact_map_caption", "SADC Region — 8 Countries");
+  const formTitle = settingString(settings, "content.contact_form_title", "Send an enquiry");
+  const formBody = settingString(settings, "content.contact_form_body", "For exploration, JORC, ESIA or lender due diligence — response within one business day.");
+  const faqTitle = settingString(settings, "content.faq_title", "Frequently asked questions");
 
   return (
     <div>
       <PageHeader
-        title="Contact — Lilongwe HQ"
-        subtitle="Malawi-based, SADC-wide. Reach our Lilongwe, Blantyre, Karonga, Kolwezi, Solwezi teams."
+        title={heroTitle}
+        subtitle={heroSubtitle}
         breadcrumbs={[{ label: "Contact" }]}
         image={miningImages.hero}
       />
@@ -43,31 +46,31 @@ export default function Contact() {
         <div className="grid lg:grid-cols-12 gap-10">
           <div className="lg:col-span-5 space-y-8">
             <div>
-              <h2 className="font-serif text-xl font-bold text-[#0a1f2e]">Visit Us</h2>
+              <h2 className="font-serif text-xl font-bold text-[#0a1f2e]">{visitTitle}</h2>
               <div className="mt-6 space-y-6">
                 <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-                  <div className="text-[11px] font-bold tracking-[0.14em] text-[#0F4A6B] uppercase">Head Office — Lilongwe</div>
+                  <div className="text-[11px] font-bold tracking-[0.14em] text-[#0F4A6B] uppercase">{officeLabel}</div>
                   <div className="mt-3 text-[15px] text-slate-700 leading-7">
-                    Area 47 Sector 3<br />
-                    Lilongwe, Malawi<br />
-                    <a href="tel:+2651123456" className="text-[#0F4A6B] font-medium hover:underline">+265 1 123 456</a><br />
-                    <a href="mailto:info@moblimited.com" className="text-[#0F4A6B] font-medium hover:underline">info@moblimited.com</a>
+                    {address.map((line) => (
+                      <span key={line}>{line}<br /></span>
+                    ))}
+                    <a href={`tel:${phone.replace(/\s/g, "")}`} className="text-[#0F4A6B] font-medium hover:underline">{phone}</a><br />
+                    <a href={`mailto:${email}`} className="text-[#0F4A6B] font-medium hover:underline">{email}</a>
                   </div>
                 </div>
                 <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-                  <div className="text-[11px] font-bold tracking-[0.14em] text-slate-500 uppercase">SADC Hubs</div>
+                  <div className="text-[11px] font-bold tracking-[0.14em] text-slate-500 uppercase">{hubsLabel}</div>
                   <div className="mt-3 text-[15px] text-slate-600 leading-7">
-                    Blantyre (Malawi) • Karonga (Kayelekera)<br />
-                    Kolwezi (DRC) • Solwezi (Zambia)<br />
-                    Balama (Mozambique) • Windhoek (Namibia)<br />
-                    Johannesburg (South Africa)
+                    {hubs.map((line) => (
+                      <span key={line}>{line}<br /></span>
+                    ))}
                   </div>
                 </div>
                 <div className="relative h-48 rounded-xl overflow-hidden border border-slate-200">
                   <Image src={miningImages.map} alt="SADC map" fill className="object-cover" unoptimized />
                   <div className="absolute inset-0 bg-[#0F4A6B]/10" />
                   <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 shadow-sm">
-                    SADC Region — 8 Countries
+                    {mapCaption}
                   </div>
                 </div>
               </div>
@@ -75,65 +78,26 @@ export default function Contact() {
           </div>
           <div className="lg:col-span-7">
             <div className="rounded-xl border border-slate-200 bg-white p-6 lg:p-8 shadow-sm">
-              <h2 className="font-serif text-xl font-bold text-[#0a1f2e]">Send an enquiry</h2>
-              <p className="mt-2 text-sm text-slate-600">For exploration, JORC, ESIA or lender due diligence — response within one business day.</p>
-              {status === "success" ? (
-                <div className="mt-6 rounded-lg bg-emerald-50 border border-emerald-200 p-4 text-sm text-emerald-800">
-                  <div className="font-semibold">Message sent successfully</div>
-                  <p className="mt-1">We'll get back to you within one business day.</p>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="mt-6 grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="name" className="mb-1.5 block text-[13px] font-medium text-slate-700">Name *</label>
-                    <input id="name" required placeholder="Your name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className={inputClass} />
-                  </div>
-                  <div>
-                    <label htmlFor="email" className="mb-1.5 block text-[13px] font-medium text-slate-700">Email *</label>
-                    <input id="email" type="email" required placeholder="you@company.com" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className={inputClass} />
-                  </div>
-                  <div>
-                    <label htmlFor="company" className="mb-1.5 block text-[13px] font-medium text-slate-700">Company</label>
-                    <input id="company" placeholder="Company name" value={formData.company} onChange={(e) => setFormData({ ...formData, company: e.target.value })} className={inputClass} />
-                  </div>
-                  <div>
-                    <label htmlFor="service" className="mb-1.5 block text-[13px] font-medium text-slate-700">Service</label>
-                    <select id="service" value={formData.service} onChange={(e) => setFormData({ ...formData, service: e.target.value })} className={inputClass}>
-                      <option value="">Select a service</option>
-                      <option>Exploration Targeting</option>
-                      <option>Resource Estimation (JORC)</option>
-                      <option>Mine Planning & Reserves</option>
-                      <option>ESG & Permitting</option>
-                    </select>
-                  </div>
-                  <div className="sm:col-span-2">
-                    <label htmlFor="message" className="mb-1.5 block text-[13px] font-medium text-slate-700">Message *</label>
-                    <textarea id="message" required rows={5} placeholder="Tell us about your project..." value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className={inputClass} />
-                  </div>
-                  <div className="sm:col-span-2">
-                    <input type="text" name="website" value={formData.website} onChange={(e) => setFormData({ ...formData, website: e.target.value })} className="hidden" tabIndex={-1} autoComplete="off" aria-hidden="true" />
-                  </div>
-                  {status === "error" && (
-                    <div className="sm:col-span-2 rounded-lg bg-red-50 border border-red-200 p-3 text-sm text-red-700">
-                      Failed to send. Please try again or email us directly.
-                    </div>
-                  )}
-                  <div className="sm:col-span-2">
-                    <button type="submit" disabled={status === "loading"} className="flex h-12 w-full items-center justify-center rounded-lg bg-[#0F4A6B] text-white text-sm font-semibold hover:bg-[#0a334d] transition-all shadow-sm hover:shadow-md disabled:opacity-60 disabled:cursor-not-allowed active:scale-[0.98]">
-                      {status === "loading" ? (
-                        <span className="flex items-center gap-2">
-                          <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
-                          Sending...
-                        </span>
-                      ) : "Send Message"}
-                    </button>
-                    <p className="mt-3 text-xs text-slate-500 text-center">Rate limited 5/min • Honeypot protected</p>
-                  </div>
-                </form>
-              )}
+              <h2 className="font-serif text-xl font-bold text-[#0a1f2e]">{formTitle}</h2>
+              <p className="mt-2 text-sm text-slate-600">{formBody}</p>
+              <ContactForm />
             </div>
           </div>
         </div>
+
+        {faqs.length > 0 && (
+          <section className="mt-16 border-t border-slate-200 pt-12">
+            <h2 className="font-serif text-2xl font-bold tracking-tight text-[#0a1f2e]">{faqTitle}</h2>
+            <div className="mt-8 grid md:grid-cols-2 gap-6">
+              {faqs.map((faq) => (
+                <div key={faq.id} className="rounded-xl border border-slate-200 bg-white p-6">
+                  <h3 className="font-serif text-[16px] font-bold leading-tight text-[#0a1f2e]">{faq.question}</h3>
+                  <p className="mt-3 text-sm leading-6 text-slate-600 whitespace-pre-line">{faq.answer}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );

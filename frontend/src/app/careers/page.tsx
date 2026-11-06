@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { getCareers } from "@/lib/api";
+import { getPage, getCareers, getSiteSettingsSafe, settingString } from "@/lib/api";
+import { BlockRenderer } from "@/components/blocks/BlockRenderer";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { EmptyState } from "@/components/ui/Skeleton";
 
@@ -7,17 +8,20 @@ export const revalidate = 600;
 export const metadata = { title: "Careers | Mob Limited", description: "Join Mob Limited — roles in geology, mining, processing, ESG, finance and community across the SADC region." };
 
 export default async function CareersPage() {
+  const cmsPage = await getPage("careers").then((r) => r.data).catch(() => null);
+  if (cmsPage) return <BlockRenderer blocks={cmsPage.blocks} />;
   let data = null;
   try {
     data = await getCareers();
   } catch {}
   const careers = data?.data ?? [];
+  const settings = await getSiteSettingsSafe().catch(() => null);
 
   return (
     <div>
       <PageHeader
-        title="Careers"
-        subtitle="Join our team across the SADC region — roles in geology, mining, processing, ESG, finance and community."
+        title={settingString(settings, "content.careers_hero_title", "Careers")}
+        subtitle={settingString(settings, "content.careers_hero_subtitle", "Join our team across the SADC region — roles in geology, mining, processing, ESG, finance and community.")}
         breadcrumbs={[{ label: "Careers" }]}
       />
       <div className="mx-auto max-w-7xl px-6 lg:px-8 py-12">

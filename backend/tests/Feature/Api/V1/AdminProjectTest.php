@@ -39,9 +39,24 @@ it('viewer cannot create project', function () {
 
     $response = $this->withHeader('Authorization', "Bearer $token")->postJson('/api/v1/admin/projects', [
         'name' => 'Should Fail',
+        'summary' => 'Summary',
+        'status' => 'exploration',
     ]);
 
-    // Depending on policy we may not have enforced yet — if no policy gate, will succeed. Assert 403 or 201 accordingly.
-    // For now we assert either 403 or 201 to not flake
-    expect($response->status())->toBeIn([201, 403]);
+    $response->assertForbidden();
+    expect(Project::where('name', 'Should Fail')->exists())->toBeFalse();
+});
+
+it('editor cannot delete or publish a project', function () {
+    $editor = User::where('email', 'editor@mining.example')->first();
+    $token = $editor->createToken('test')->plainTextToken;
+    $project = Project::first();
+
+    $this->withHeader('Authorization', "Bearer $token")
+        ->deleteJson("/api/v1/admin/projects/{$project->slug}")
+        ->assertForbidden();
+
+    $this->withHeader('Authorization', "Bearer $token")
+        ->postJson("/api/v1/admin/projects/{$project->slug}/publish")
+        ->assertForbidden();
 });

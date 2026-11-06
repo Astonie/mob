@@ -19,7 +19,7 @@ class PageAdminController extends Controller
             $q->where('title', 'like', '%'.$request->string('search').'%');
         }
 
-        return PageResource::collection($q->paginate($request->integer('per_page', 15)));
+        return PageResource::collection($q->paginate(min($request->integer('per_page', 15), 100)));
     }
 
     public function store(StorePageRequest $request)

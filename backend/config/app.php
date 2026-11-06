@@ -15,6 +15,8 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'version' => env('APP_VERSION', '1.0.0'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -122,5 +124,41 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Production Admin Provisioning
+    |--------------------------------------------------------------------------
+    |
+    | The first super-admin is seeded on deploy in production from these
+    | values. If they are not set, no admin user is created in production.
+    |
+    */
+
+    'seed_admin' => [
+        'name' => env('SEED_ADMIN_NAME', 'Administrator'),
+        'email' => env('SEED_ADMIN_EMAIL'),
+        'password' => env('SEED_ADMIN_PASSWORD'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Frontend & ISR Revalidation
+    |--------------------------------------------------------------------------
+    |
+    | Used by App\Support\Revalidate to bust the Next.js ISR cache when
+    | content changes. Kept in config so it survives `config:cache`.
+    |
+    */
+
+    'frontend_url' => env('FRONTEND_URL', 'http://localhost:3000'),
+
+    // Internal URL used by the backend to call Next.js ISR revalidation.
+    // Defaults to frontend_url, but in containerised setups this is usually
+    // the internal service address (e.g. http://frontend:3000) while
+    // frontend_url stays the public, browser-reachable site URL.
+    'revalidate_url' => env('REVALIDATE_URL') ?: env('FRONTEND_URL', 'http://localhost:3000'),
+
+    'revalidate_secret' => env('REVALIDATE_SECRET'),
 
 ];

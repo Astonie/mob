@@ -25,6 +25,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'media.view', 'media.create', 'media.update', 'media.delete',
             'documents.view', 'documents.create', 'documents.update', 'documents.delete',
             'navigation.manage', 'seo.manage', 'settings.manage', 'users.manage', 'audit.view',
+            'contact_submissions.view', 'contact_submissions.manage',
         ];
 
         foreach ($permissions as $perm) {

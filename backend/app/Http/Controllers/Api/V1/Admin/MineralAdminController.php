@@ -18,7 +18,7 @@ class MineralAdminController extends Controller
             $q->where('name', 'like', '%'.$request->string('search').'%');
         }
 
-        return MineralResource::collection($q->paginate($request->integer('per_page', 15)));
+        return MineralResource::collection($q->paginate(min($request->integer('per_page', 15), 100)));
     }
 
     public function store(StoreMineralRequest $request)

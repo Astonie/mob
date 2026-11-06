@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 interface SearchResult {
   title: string;
@@ -15,7 +14,6 @@ export function SearchOverlay({ isOpen, onClose }: { isOpen: boolean; onClose: (
   const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const router = useRouter();
 
   useEffect(() => {
     if (isOpen) {
@@ -28,14 +26,11 @@ export function SearchOverlay({ isOpen, onClose }: { isOpen: boolean; onClose: (
   }, [isOpen]);
 
   useEffect(() => {
-    if (!query.trim()) {
-      setResults([]);
-      return;
-    }
-    setLoading(true);
+    if (!query.trim()) return;
     const timer = setTimeout(async () => {
       try {
-        const res = await fetch(`/api/v1/search?q=${encodeURIComponent(query)}`);
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+        const res = await fetch(`${apiUrl}/api/v1/search?q=${encodeURIComponent(query)}`);
         const data = await res.json();
         setResults(data.data || []);
       } catch {
@@ -46,6 +41,16 @@ export function SearchOverlay({ isOpen, onClose }: { isOpen: boolean; onClose: (
     }, 300);
     return () => clearTimeout(timer);
   }, [query]);
+
+  function onQueryChange(value: string) {
+    setQuery(value);
+    if (value.trim()) {
+      setLoading(true);
+    } else {
+      setResults([]);
+      setLoading(false);
+    }
+  }
 
   if (!isOpen) return null;
 
@@ -61,7 +66,7 @@ export function SearchOverlay({ isOpen, onClose }: { isOpen: boolean; onClose: (
             <input
               ref={inputRef}
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(e) => onQueryChange(e.target.value)}
               placeholder="Search projects, minerals, news..."
               className="flex-1 text-[15px] outline-none placeholder:text-slate-400"
             />

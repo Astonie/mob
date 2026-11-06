@@ -12,7 +12,7 @@ beforeEach(function () {
 it('lists published projects', function () {
     $response = $this->getJson('/api/v1/projects');
     $response->assertOk()->assertJsonStructure(['data', 'meta', 'links']);
-    expect($response->json('data'))->toHaveCount(4);
+    expect($response->json('data'))->toHaveCount(6);
 });
 
 it('shows a project by slug', function () {

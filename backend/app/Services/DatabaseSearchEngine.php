@@ -18,12 +18,12 @@ class DatabaseSearchEngine implements SearchEngine
         $results = collect();
 
         $searchables = [
-            'pages' => ['table' => 'pages', 'columns' => ['title', 'excerpt'], 'label' => 'Page'],
-            'projects' => ['table' => 'projects', 'columns' => ['name', 'summary', 'description'], 'label' => 'Project'],
-            'minerals' => ['table' => 'minerals', 'columns' => ['name', 'summary', 'description'], 'label' => 'Mineral'],
-            'news' => ['table' => 'news_articles', 'columns' => ['title', 'excerpt', 'content'], 'label' => 'News'],
-            'documents' => ['table' => 'documents', 'columns' => ['title', 'description'], 'label' => 'Document'],
-            'careers' => ['table' => 'careers', 'columns' => ['title', 'summary', 'description'], 'label' => 'Career'],
+            'pages' => ['table' => 'pages', 'columns' => ['title', 'excerpt'], 'label' => 'Page', 'status_columns' => ['status'], 'extra' => fn ($q) => $q->where('status', 'published')],
+            'projects' => ['table' => 'projects', 'columns' => ['name', 'summary', 'description'], 'label' => 'Project', 'extra' => fn ($q) => $q->where('content_status', 'published')->where('is_active', true)],
+            'minerals' => ['table' => 'minerals', 'columns' => ['name', 'summary', 'description'], 'label' => 'Mineral', 'extra' => fn ($q) => $q->where('status', 'published')],
+            'news' => ['table' => 'news_articles', 'columns' => ['title', 'excerpt', 'content'], 'label' => 'News', 'extra' => fn ($q) => $q->where('status', 'published')],
+            'documents' => ['table' => 'documents', 'columns' => ['title', 'description'], 'label' => 'Document', 'extra' => fn ($q) => $q->where('visibility', 'public')->where('is_active', true)],
+            'careers' => ['table' => 'careers', 'columns' => ['title', 'summary', 'description'], 'label' => 'Career', 'extra' => fn ($q) => $q->where('status', 'open')->where('is_active', true)],
         ];
 
         if (! empty($types)) {
@@ -38,10 +38,8 @@ class DatabaseSearchEngine implements SearchEngine
                 }
             });
             // only published/active where applicable
-            if (in_array($type, ['pages', 'projects', 'news'])) {
-                $q->where(function ($w) {
-                    $w->where('status', 'published')->orWhere('content_status', 'published');
-                });
+            if (isset($config['extra']) && is_callable($config['extra'])) {
+                $config['extra']($q);
             }
             $items = $q->limit(20)->get()->map(fn ($row) => [
                 'type' => $type,

@@ -11,7 +11,7 @@ class LocationAdminController extends Controller
 {
     public function index(Request $request)
     {
-        return Location::query()->orderBy('sort_order')->paginate($request->integer('per_page', 15));
+        return Location::query()->orderBy('sort_order')->paginate(min($request->integer('per_page', 15), 100));
     }
 
     public function store(Request $request)

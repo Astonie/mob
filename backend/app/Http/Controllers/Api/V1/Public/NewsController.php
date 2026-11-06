@@ -30,7 +30,7 @@ class NewsController extends Controller
             $query->where(fn ($q) => $q->where('title', 'like', $s)->orWhere('excerpt', 'like', $s));
         }
 
-        $news = $query->paginate($request->integer('per_page', 12))->withQueryString();
+        $news = $query->paginate(min($request->integer('per_page', 12), 100))->withQueryString();
 
         return NewsResource::collection($news);
     }

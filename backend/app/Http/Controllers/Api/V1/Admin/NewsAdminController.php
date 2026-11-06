@@ -21,7 +21,7 @@ class NewsAdminController extends Controller
             $q->where('title', 'like', '%'.$request->string('search').'%');
         }
 
-        return NewsResource::collection($q->paginate($request->integer('per_page', 15)));
+        return NewsResource::collection($q->paginate(min($request->integer('per_page', 15), 100)));
     }
 
     public function store(StoreNewsRequest $request)

@@ -23,7 +23,7 @@ class ProjectAdminController extends Controller
             $q->where('content_status', $request->string('status'));
         }
 
-        return ProjectResource::collection($q->paginate($request->integer('per_page', 15)));
+        return ProjectResource::collection($q->paginate(min($request->integer('per_page', 15), 100)));
     }
 
     public function store(StoreProjectRequest $request)

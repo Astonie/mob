@@ -1,5 +1,11 @@
 FROM node:20-alpine AS base
 WORKDIR /app
+
+ARG NEXT_PUBLIC_API_URL=http://localhost:8000
+ARG NEXT_PUBLIC_SITE_URL=http://localhost:3000
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
+
 COPY package.json package-lock.json* ./
 RUN npm ci
 COPY . .
@@ -8,13 +14,14 @@ RUN npm run build
 FROM node:20-alpine AS production
 WORKDIR /app
 ENV NODE_ENV=production
-COPY --from=base /app/package.json ./package.json
-COPY --from=base /app/node_modules ./node_modules
-COPY --from=base /app/.next ./.next
+ENV PORT=3000
+
 COPY --from=base /app/public ./public
-COPY --from=base /app/next.config.ts ./next.config.ts
+COPY --from=base /app/.next/standalone ./
+COPY --from=base /app/.next/static ./.next/static
+
 EXPOSE 3000
-CMD ["npm", "start"]
+CMD ["node", "server.js"]
 
 # Dev target used by docker-compose
 FROM base AS dev

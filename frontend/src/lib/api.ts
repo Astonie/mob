@@ -1,4 +1,33 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+// Server-side fetches run inside containers, where NEXT_PUBLIC_API_URL (browser-facing
+// localhost) doesn't resolve — API_URL (compose: http://backend:8000) takes precedence there.
+// Client components always use the browser-facing URL.
+export function apiBaseUrl(): string {
+  if (typeof window !== "undefined") {
+    return process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  }
+  return process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+}
+
+// Absolute URL for a backend media path (e.g. leadership photos).
+// Always browser-facing: the result lands in <img src>, so it must resolve
+// in the visitor's browser, never to a container-internal hostname.
+export function publicMediaUrl(path?: string | null): string | null {
+  if (!path) return null;
+  if (/^https?:\/\//i.test(path)) return path;
+  const base = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  const clean = path.replace(/^\/+/, "").replace(/^storage\//, "");
+  return `${base}/storage/${clean}`;
+}
+
+// Resolve an image setting value: absolute URLs pass through, values starting
+// with "/" are frontend /public assets (e.g. /logo-mob.svg), anything else is
+// a media-library path uploaded via the admin (e.g. "branding/logo.png").
+export function mediaSrc(value?: string | null): string | undefined {
+  if (!value) return undefined;
+  if (/^https?:\/\//i.test(value)) return value;
+  if (value.startsWith("/")) return value;
+  return publicMediaUrl(value) ?? undefined;
+}
 
 export type ApiResponse<T> = {
   data: T;
@@ -23,7 +52,7 @@ async function apiFetch<T>(
   path: string,
   init?: RequestInit & { next?: NextFetchRequestConfig }
 ): Promise<T> {
-  const url = path.startsWith("http") ? path : `${API_URL}/api/v1${path}`;
+  const url = path.startsWith("http") ? path : `${apiBaseUrl()}/api/v1${path}`;
   const res = await fetch(url, {
     ...init,
     headers: {
@@ -100,6 +129,84 @@ export async function search(query: string) {
     `/search?q=${encodeURIComponent(query)}`,
     { next: { revalidate: 60 } }
   );
+}
+
+export async function getSiteSettings() {
+  return apiFetch<{ data: SiteSettings }>(`/site-settings`, {
+    next: { revalidate: 3600, tags: ["settings"] },
+  });
+}
+
+export async function getEsgContents() {
+  return apiFetch<EsgContent[]>(`/esg-contents`, {
+    next: { revalidate: 3600, tags: ["esg"] },
+  });
+}
+
+export async function getFaqs() {
+  return apiFetch<Faq[]>(`/faqs`, {
+    next: { revalidate: 3600, tags: ["faq"] },
+  });
+}
+
+export async function getLeadership() {
+  return apiFetch<LeadershipProfile[]>(`/leadership`, {
+    next: { revalidate: 3600, tags: ["leadership"] },
+  });
+}
+
+// Settings helpers — every key has a hardcoded fallback so the site works if the API is down.
+export type SiteSettings = Record<string, unknown>;
+
+export function settingString(settings: SiteSettings | null | undefined, key: string, fallback: string): string {
+  const v = settings?.[key];
+  return typeof v === "string" ? v : typeof v === "number" ? String(v) : fallback;
+}
+
+export function settingLines(settings: SiteSettings | null | undefined, key: string, fallback: string[]): string[] {
+  const v = settings?.[key];
+  if (Array.isArray(v)) return v.map(String);
+  if (typeof v === "string" && v.trim()) return v.split(/\r?\n/).map((s) => s.trim()).filter(Boolean);
+  return fallback;
+}
+
+export function settingArray(settings: SiteSettings | null | undefined, key: string, fallback: string[]): string[] {
+  const v = settings?.[key];
+  if (Array.isArray(v)) return v.map(String);
+  return fallback;
+}
+
+// Optional settings fetch — returns null instead of throwing (used where content must render regardless).
+export async function getSiteSettingsSafe(): Promise<SiteSettings | null> {
+  try {
+    return (await getSiteSettings()).data;
+  } catch {
+    return null;
+  }
+}
+
+export async function getFaqsSafe(): Promise<Faq[]> {
+  try {
+    return await getFaqs();
+  } catch {
+    return [];
+  }
+}
+
+export async function getLeadershipSafe(): Promise<LeadershipProfile[]> {
+  try {
+    return await getLeadership();
+  } catch {
+    return [];
+  }
+}
+
+export async function getEsgContentsSafe(): Promise<EsgContent[]> {
+  try {
+    return await getEsgContents();
+  } catch {
+    return [];
+  }
 }
 
 // Types for API
@@ -203,4 +310,37 @@ export type SearchResult = {
   title: string;
   slug: string;
   excerpt: string;
+};
+
+export type EsgContent = {
+  id: string;
+  title: string;
+  slug: string;
+  category: string | null;
+  summary: string | null;
+  content: string | null;
+  featured_image: string | null;
+  metrics: unknown;
+  sort_order: number;
+  published_at: string | null;
+};
+
+export type Faq = {
+  id: string;
+  question: string;
+  answer: string;
+  category: string | null;
+  sort_order: number;
+};
+
+export type LeadershipProfile = {
+  id: string;
+  name: string;
+  slug: string;
+  position: string | null;
+  category: string | null;
+  bio: string | null;
+  full_bio: string | null;
+  photo: string | null;
+  linkedin_url: string | null;
 };

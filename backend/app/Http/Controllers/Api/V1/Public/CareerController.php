@@ -19,7 +19,7 @@ class CareerController extends Controller
             $q->where('location', 'like', '%'.$request->string('location').'%');
         }
 
-        return CareerResource::collection($q->paginate($request->integer('per_page', 15)));
+        return CareerResource::collection($q->paginate(min($request->integer('per_page', 15), 100)));
     }
 
     public function show(string $slug)

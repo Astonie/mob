@@ -20,7 +20,11 @@ class NavigationMenuResource extends JsonResource
     protected static function formatItem($item): array
     {
         return [
-            'id' => $item->id, 'title' => $item->title, 'url' => $item->url, 'type' => $item->type, 'target' => $item->target,
+            'id' => $item->id,
+            'title' => $item->title,
+            'url' => $item->url,
+            'type' => $item->type,
+            'target' => $item->target,
             'children' => $item->children ? $item->children->map(fn ($c) => self::formatItem($c))->toArray() : [],
         ];
     }

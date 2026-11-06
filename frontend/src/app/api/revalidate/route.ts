@@ -11,12 +11,12 @@ export async function POST(req: NextRequest) {
   const tag: string | undefined = body.tag;
   const path: string | undefined = body.path;
 
-  if (tag) (revalidateTag as unknown as (t: string) => void)(tag);
-  if (path) (revalidatePath as unknown as (p: string) => void)(path);
+  if (tag) revalidateTag(tag, "max");
+  if (path) revalidatePath(path);
   if (!tag && !path) {
-    (revalidateTag as unknown as (t: string) => void)("projects");
-    (revalidateTag as unknown as (t: string) => void)("news");
-    (revalidatePath as unknown as (p: string) => void)("/");
+    revalidateTag("projects", "max");
+    revalidateTag("news", "max");
+    revalidatePath("/");
   }
 
   return NextResponse.json({ revalidated: true, tag, path, now: Date.now() });

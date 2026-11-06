@@ -121,7 +121,7 @@ class DemoDataSeeder extends Seeder
         $home = Page::firstOrCreate(['slug' => 'home'], ['title' => 'Home', 'template' => 'home', 'status' => 'published', 'is_homepage' => true, 'published_at' => now(), 'created_by' => $admin?->id]);
         $home->blocks()->delete();
         $blocks = [
-            ['type' => 'hero', 'data' => ['heading' => 'Integrated Mining and Mineral Consultancy', 'subheading' => 'Malawi-based, SADC-wide. From greenfield exploration to bankable feasibility — Mob de-risks your resource. JORC, NI 43-101 & SAMREC. 120+ projects across Malawi, Zambia, DRC, Mozambique, Tanzania & beyond.', 'cta_label' => 'Explore Services', 'cta_url' => '/projects', 'image' => 'https://images.unsplash.com/photo-1513828583688-c52646db42da?w=1600'], 'sort_order' => 0],
+            ['type' => 'hero', 'data' => ['heading' => 'Integrated Mining & Mineral Solutions', 'subheading' => 'Malawi-based, SADC-wide. One integrated team across the mining value chain — exploring potential and delivering value from greenfield exploration to bankable studies and mine development. JORC, NI 43-101 & SAMREC.', 'cta_label' => 'Explore Services', 'cta_url' => '/services', 'image' => 'https://images.unsplash.com/photo-1513828583688-c52646db42da?w=1600'], 'sort_order' => 0],
             ['type' => 'stats', 'data' => ['stats' => [['label' => 'Projects Delivered', 'value' => '120+'], ['label' => 'Years in SADC', 'value' => '10+'], ['label' => 'JORC Resources Defined', 'value' => '2.1 Bt'], ['label' => 'SADC Countries', 'value' => '8']]], 'sort_order' => 1],
             ['type' => 'rich_text', 'data' => ['content' => '<p><strong>Mob Limited</strong> is headquartered in <strong>Lilongwe, Malawi</strong> and serves the entire SADC region. We combine Malawian field execution with world-class JORC modelling — your study stands up to lenders, boards and regulators.</p>'], 'sort_order' => 2],
             ['type' => 'cta', 'data' => ['heading' => 'Start a project with Mob', 'text' => 'Scoping, PEA, PFS or FS — talk to our principal consultants in Lilongwe, Blantyre or Kolwezi. Response within one business day.', 'cta_label' => 'Contact Lilongwe HQ', 'cta_url' => '/contact'], 'sort_order' => 3],
@@ -130,9 +130,35 @@ class DemoDataSeeder extends Seeder
             $home->blocks()->create($b);
         }
 
-        $about = Page::firstOrCreate(['slug' => 'about'], ['title' => 'About Mob', 'status' => 'published', 'published_at' => now()]);
+        $about = Page::firstOrCreate(['slug' => 'about'], ['title' => 'About Mob Limited', 'status' => 'published', 'published_at' => now(), 'created_by' => $admin?->id]);
         $about->blocks()->delete();
-        $about->blocks()->create(['type' => 'rich_text', 'data' => ['content' => '<h2>About Mob Limited</h2><p>Headquartered in <strong>Lilongwe, Malawi</strong>, Mob Limited is an integrated mining and mineral consultancy serving the <strong>SADC region</strong> — Malawi, Zambia, DRC, Mozambique, Tanzania, South Africa, Zimbabwe, Botswana, Namibia and beyond. We deliver JORC, NI 43-101 and SAMREC studies from exploration targeting and 3D modelling to pit optimisation, reserves, ESIA and lender due diligence.</p><p><em>Professional, bankable, SADC-grounded.</em></p>'], 'sort_order' => 0]);
+        $about->blocks()->create(['type' => 'hero', 'data' => ['heading' => 'About Mob Limited', 'subheading' => 'Malawi-based, SADC-wide. From greenfield exploration to mine development — we de-risk your resource with world-class technical excellence.', 'cta_label' => 'Talk to us', 'cta_url' => '/contact'], 'sort_order' => 0]);
+        $about->blocks()->create(['type' => 'rich_text', 'data' => ['content' => '<h2>Our Story</h2><p>Headquartered in <strong>Lilongwe, Malawi</strong>, Mob Limited is an integrated mining and mineral consultancy serving the entire <strong>SADC region</strong> — Malawi, Zambia, DRC, Mozambique, Tanzania, South Africa, Zimbabwe, Botswana, Namibia and beyond. We deliver JORC, NI 43-101 and SAMREC studies from exploration targeting and 3D modelling to pit optimisation, reserves, ESIA and lender due diligence.</p><p>From our headquarters in Lilongwe, we support exploration, resource estimation, mine planning, ESG and permitting across 8 SADC countries — combining Malawian field execution with world-class JORC modelling so your study stands up to lenders, boards and regulators.</p><p><em>Professional, bankable, SADC-grounded.</em></p>'], 'sort_order' => 1]);
+        $about->blocks()->create(['type' => 'stats', 'data' => ['stats' => [['label' => 'Projects Delivered', 'value' => '120+'], ['label' => 'Years in SADC', 'value' => '10+'], ['label' => 'SADC Countries', 'value' => '8'], ['label' => 'Professionals', 'value' => '50+']]], 'sort_order' => 2]);
+        $about->blocks()->create(['type' => 'cta', 'data' => ['heading' => 'Ready to de-risk your next project?', 'text' => 'Talk to our Lilongwe team. Response within one business day.', 'cta_label' => 'Get in touch', 'cta_url' => '/contact'], 'sort_order' => 3]);
+
+        $privacy = Page::firstOrCreate(['slug' => 'privacy'], ['title' => 'Privacy Policy', 'status' => 'published', 'published_at' => now()]);
+        $privacy->blocks()->delete();
+        $privacy->blocks()->create(['type' => 'rich_text', 'data' => ['content' => '<h2>Privacy Policy</h2><p>Mob Limited (&quot;we&quot;), headquartered at Area 47 Sector 3, Lilongwe, Malawi, respects your privacy. This policy explains how we handle information you share through this website.</p><h3>Information we collect</h3><p>When you submit a contact enquiry or job application we collect the details you provide (name, email, company, message and any CV or supporting documents) and technical logs needed to operate the site securely.</p><h3>How we use it</h3><p>We use your information only to respond to your enquiry, assess applications, and meet legal obligations under Malawian data protection law. We do not sell your personal data.</p><h3>Retention and contact</h3><p>We keep enquiries and applications only as long as necessary for these purposes. To request access, correction or deletion of your data, email <strong>info@moblimited.com</strong> or write to our Lilongwe office.</p><p><em>Last updated: 2026.</em></p>'], 'sort_order' => 0]);
+
+        $terms = Page::firstOrCreate(['slug' => 'terms'], ['title' => 'Terms of Use', 'status' => 'published', 'published_at' => now()]);
+        $terms->blocks()->delete();
+        $terms->blocks()->create(['type' => 'rich_text', 'data' => ['content' => '<h2>Terms of Use</h2><p>By using this website you agree to these terms. Content is provided for general information about Mob Limited and our services.</p><h3>No professional advice</h3><p>Nothing on this site constitutes a mineral resource or reserve statement under JORC, NI 43-101 or SAMREC, investment advice, or a binding offer of services. Project information is illustrative and may be updated without notice.</p><h3>Intellectual property</h3><p>Unless stated otherwise, site content is owned by Mob Limited. You may view and share links to it for personal and internal business use; reproduction requires our written consent.</p><h3>External links and governing law</h3><p>Links to third-party sites are provided for convenience; we are not responsible for their content. These terms are governed by the laws of Malawi.</p><p><em>Last updated: 2026.</em></p>'], 'sort_order' => 0]);
+
+        // Services page — only the core services from the company profile
+        $services = Page::firstOrCreate(['slug' => 'services'], ['title' => 'Our Core Services', 'template' => 'default', 'status' => 'published', 'published_at' => now(), 'created_by' => $admin?->id]);
+        $services->blocks()->delete();
+        $services->blocks()->create(['type' => 'hero', 'data' => ['heading' => 'Our Core Services', 'subheading' => 'Seven disciplines. One integrated team — delivering JORC, NI 43-101 and SAMREC compliant technical services across the SADC mining value chain.', 'cta_label' => 'Talk to us', 'cta_url' => '/contact'], 'sort_order' => 0]);
+        $services->blocks()->create(['type' => 'card_grid', 'data' => ['title' => 'Our Core Services', 'cards' => [
+            ['title' => 'Geological Services', 'text' => 'Geological mapping, prospecting, structural studies & resource evaluation.'],
+            ['title' => 'Mineral Exploration', 'text' => 'Exploration planning, geochemical sampling, drilling supervision & reporting.'],
+            ['title' => 'Surveying, GIS & Remote Sensing', 'text' => 'Topographic surveys, drone mapping, GIS analysis & spatial solutions.'],
+            ['title' => 'Geophysical Services', 'text' => 'Magnetic, electrical & EM surveys with professional data interpretation.'],
+            ['title' => 'Mining Consultancy', 'text' => 'Mine planning, feasibility studies, due diligence & technical advisory services.'],
+            ['title' => 'Environmental & Regulatory Services', 'text' => 'Environmental assessments, compliance support, licensing & rehabilitation planning.'],
+            ['title' => 'Project Management & Technical Support', 'text' => 'Project management, HSE, technical reporting, field logistics & data management.'],
+        ]], 'sort_order' => 1]);
+        $services->blocks()->create(['type' => 'cta', 'data' => ['heading' => 'Ready to de-risk your next project?', 'text' => 'Talk to our Lilongwe team. Response within one business day.', 'cta_label' => 'Get in touch', 'cta_url' => '/contact'], 'sort_order' => 2]);
 
         // Navigation
         $main = NavigationMenu::firstOrCreate(['slug' => 'main'], ['name' => 'Main Navigation', 'location' => 'header']);
@@ -140,12 +166,11 @@ class DemoDataSeeder extends Seeder
         $items = [
             ['title' => 'Home', 'url' => '/', 'type' => 'internal', 'sort_order' => 0],
             ['title' => 'About', 'url' => '/about', 'type' => 'internal', 'sort_order' => 1],
-            ['title' => 'Operations', 'url' => '/projects', 'type' => 'internal', 'sort_order' => 2],
-            ['title' => 'Minerals', 'url' => '/minerals', 'type' => 'internal', 'sort_order' => 3],
-            ['title' => 'Sustainability', 'url' => '/sustainability', 'type' => 'internal', 'sort_order' => 4],
-            ['title' => 'News', 'url' => '/news', 'type' => 'internal', 'sort_order' => 5],
-            ['title' => 'Careers', 'url' => '/careers', 'type' => 'internal', 'sort_order' => 6],
-            ['title' => 'Contact', 'url' => '/contact', 'type' => 'internal', 'sort_order' => 7],
+            ['title' => 'Our Services', 'url' => '/services', 'type' => 'internal', 'sort_order' => 2],
+            ['title' => 'Our Team', 'url' => '/team', 'type' => 'internal', 'sort_order' => 3],
+            ['title' => 'News', 'url' => '/news', 'type' => 'internal', 'sort_order' => 4],
+            ['title' => 'Careers', 'url' => '/careers', 'type' => 'internal', 'sort_order' => 5],
+            ['title' => 'Contact', 'url' => '/contact', 'type' => 'internal', 'sort_order' => 6],
         ];
         foreach ($items as $it) {
             $main->allItems()->create($it);
@@ -155,8 +180,7 @@ class DemoDataSeeder extends Seeder
         $footer->allItems()->create(['title' => 'Privacy Policy', 'url' => '/privacy', 'type' => 'internal', 'sort_order' => 0]);
         $footer->allItems()->create(['title' => 'Terms', 'url' => '/terms', 'type' => 'internal', 'sort_order' => 1]);
 
-        // Leadership — Malawi-led, SADC team
-        LeadershipProfile::query()->delete();
+        // Leadership — Malawi-led, SADC team (idempotent: soft-deleted rows keep slugs)
         $leaders = [
             ['name' => 'Dr. Blessings Mwale', 'slug' => 'blessings-mwale', 'position' => 'Managing Director — Principal Geologist (Malawi)', 'category' => 'executive', 'bio' => '25 years SADC, ex-Paladin, JORC Competent Person for rutile/graphite/REE.', 'sort_order' => 0],
             ['name' => 'Sarah Bennett', 'slug' => 'sarah-bennett', 'position' => 'Chief Financial & ESG Officer', 'category' => 'executive', 'bio' => 'CA, ex-Anglo American, TCFD/GRI.', 'sort_order' => 1],
@@ -164,50 +188,46 @@ class DemoDataSeeder extends Seeder
             ['name' => 'Grace Tembo', 'slug' => 'grace-tembo', 'position' => 'Head — Exploration (SADC)', 'category' => 'executive', 'bio' => 'Geochemist, DRC/Zambia copperbelt.', 'sort_order' => 2],
         ];
         foreach ($leaders as $l) {
-            LeadershipProfile::create($l);
+            LeadershipProfile::withTrashed()->updateOrCreate(['slug' => $l['slug']], array_merge($l, ['deleted_at' => null]));
         }
 
-        // Careers — Malawi + SADC
-        Career::query()->delete();
+        // Careers — Malawi + SADC (idempotent)
         $careers = [
             ['title' => 'Senior Mine Geologist — Lilongwe (Kasiya)', 'slug' => 'senior-mine-geologist-lilongwe', 'department' => 'Geology', 'location' => 'Lilongwe, Malawi', 'employment_type' => 'full_time', 'summary' => 'Lead grade control & JORC modelling for rutile sands.', 'description' => '10+ years mineral sands, Leapfrog/Micromine, QA/QC.', 'status' => 'open', 'deadline' => now()->addDays(30), 'published_at' => now(), 'is_active' => true],
             ['title' => 'ESG & Permitting Lead — SADC', 'slug' => 'esg-permitting-sadc', 'department' => 'Sustainability', 'location' => 'Blantyre, Malawi', 'employment_type' => 'full_time', 'summary' => 'Own ESIA, RAP and SADC stakeholder.', 'description' => 'GRI, IFC PS, Malawi Mines Act experience.', 'status' => 'open', 'deadline' => now()->addDays(21), 'published_at' => now(), 'is_active' => true],
             ['title' => 'Graduate Programme — Exploration (Malawi)', 'slug' => 'graduate-malawi-2026', 'department' => 'Exploration', 'location' => 'Lilongwe / Karonga', 'employment_type' => 'internship', 'summary' => '24-month rotation, SADC field camps.', 'description' => 'Open to Malawian graduates, 2:1 Geosciences.', 'status' => 'open', 'deadline' => now()->addDays(60), 'published_at' => now(), 'is_active' => true],
         ];
         foreach ($careers as $c) {
-            Career::create($c);
+            Career::withTrashed()->updateOrCreate(['slug' => $c['slug']], array_merge($c, ['deleted_at' => null]));
         }
 
-        // Procurement
-        ProcurementNotice::query()->delete();
-        ProcurementNotice::create(['title' => 'Supply of Diamond Drilling — SADC (2026-28)', 'slug' => 'drilling-sadc-2026', 'reference_number' => 'MOB-PROC-2026-001', 'category' => 'tender', 'summary' => '15,000m HQ/NQ across Malawi/Zambia', 'description' => 'SADC-wide drilling, 2-year term.', 'status' => 'published', 'deadline' => now()->addDays(18), 'published_at' => now(), 'contact_email' => 'procurement@moblimited.com']);
+        // Procurement (idempotent)
+        ProcurementNotice::withTrashed()->updateOrCreate(['slug' => 'drilling-sadc-2026'], ['title' => 'Supply of Diamond Drilling — SADC (2026-28)', 'reference_number' => 'MOB-PROC-2026-001', 'category' => 'tender', 'summary' => '15,000m HQ/NQ across Malawi/Zambia', 'description' => 'SADC-wide drilling, 2-year term.', 'status' => 'published', 'deadline' => now()->addDays(18), 'published_at' => now(), 'contact_email' => 'procurement@moblimited.com', 'deleted_at' => null]);
 
-        // ESG — SADC focus
-        EsgContent::query()->delete();
+        // ESG — SADC focus (idempotent)
         $esg = [
             ['title' => 'Water & Land — Malawi Stewardship', 'slug' => 'water-stewardship', 'category' => 'environment', 'summary' => 'Hydro mining, closed circuit, 82% recycle — Lake Malawi basin.', 'content' => 'Zero discharge, real-time monitoring.', 'is_active' => true, 'status' => 'published', 'sort_order' => 0],
             ['title' => 'SADC Local Content', 'slug' => 'local-economic-participation', 'category' => 'community', 'summary' => 'SADC suppliers, Malawian enterprise development.', 'content' => 'Enterprise programme across 8 countries.', 'is_active' => true, 'status' => 'published', 'sort_order' => 1],
         ];
         foreach ($esg as $e) {
-            EsgContent::create($e);
+            EsgContent::withTrashed()->updateOrCreate(['slug' => $e['slug']], array_merge($e, ['deleted_at' => null]));
         }
 
-        // FAQs
-        Faq::query()->delete();
-        Faq::create(['question' => 'Where is Mob headquartered?', 'answer' => 'Head Office is Area 47 Sector 3, Lilongwe, Malawi. We serve the whole SADC region with hubs in Blantyre, Kolwezi (DRC), Solwezi (Zambia) and Johannesburg.', 'category' => 'general', 'is_active' => true]);
-        Faq::create(['question' => 'Which codes do you sign?', 'answer' => 'JORC, NI 43-101 and SAMREC — competent persons for SADC deposits.', 'category' => 'general', 'is_active' => true]);
+        // FAQs (idempotent)
+        Faq::firstOrCreate(['question' => 'Where is Mob headquartered?'], ['answer' => 'Head Office is Area 47 Sector 3, Lilongwe, Malawi. We serve the whole SADC region with hubs in Blantyre, Kolwezi (DRC), Solwezi (Zambia) and Johannesburg.', 'category' => 'general', 'is_active' => true]);
+        Faq::firstOrCreate(['question' => 'Which codes do you sign?'], ['answer' => 'JORC, NI 43-101 and SAMREC — competent persons for SADC deposits.', 'category' => 'general', 'is_active' => true]);
 
         // Site Settings — Malawi SADC
         $settings = [
             'site.name' => ['group' => 'general', 'value' => 'Mob Limited', 'type' => 'text'],
-            'site.tagline' => ['group' => 'general', 'value' => 'Integrated Mining and Mineral Consultancy — Malawi, SADC Region', 'type' => 'text'],
+            'site.tagline' => ['group' => 'general', 'value' => 'Integrated Mining & Mineral Solutions — Exploring Potential. Delivering Value.', 'type' => 'text'],
             'site.email' => ['group' => 'contact', 'value' => 'info@moblimited.com', 'type' => 'text'],
-            'site.phone' => ['group' => 'contact', 'value' => '+265 1 123 456', 'type' => 'text'],
+            'site.phone' => ['group' => 'contact', 'value' => '+265 881 525 611', 'type' => 'text'],
             'site.address' => ['group' => 'contact', 'value' => 'Area 47 Sector 3, Lilongwe, Malawi', 'type' => 'text'],
             'site.region' => ['group' => 'general', 'value' => 'SADC Region — Malawi, Zambia, DRC, Mozambique, Tanzania, South Africa, Zimbabwe, Botswana, Namibia', 'type' => 'text'],
             'social.linkedin' => ['group' => 'social', 'value' => 'https://linkedin.com/company/mob-limited', 'type' => 'text'],
-            'seo.default_title' => ['group' => 'seo', 'value' => 'Mob Limited — Malawi | Integrated Mining and Mineral Consultancy — SADC', 'type' => 'text'],
-            'seo.default_description' => ['group' => 'seo', 'value' => 'Malawi-based, SADC-wide mining consultancy. 120+ projects, JORC/NI 43-101, exploration to mine development across the Copperbelt and beyond.', 'type' => 'text'],
+            'seo.default_title' => ['group' => 'seo', 'value' => 'Mob Limited — Integrated Mining & Mineral Solutions | Malawi & SADC', 'type' => 'text'],
+            'seo.default_description' => ['group' => 'seo', 'value' => 'Malawi-based, SADC-wide mining solutions. Geological services, exploration, surveying, geophysics, mining consultancy, environmental compliance and project delivery.', 'type' => 'text'],
         ];
         foreach ($settings as $k => $v) {
             SiteSetting::updateOrCreate(['key' => $k], ['value' => $v['value'], 'group' => $v['group'], 'type' => $v['type'], 'is_public' => true]);

@@ -35,7 +35,7 @@ class ProjectController extends Controller
 
         $query->orderByRaw('is_featured DESC, sort_order ASC, published_at DESC');
 
-        $projects = $query->paginate($request->integer('per_page', 12))->withQueryString();
+        $projects = $query->paginate(min($request->integer('per_page', 12), 100))->withQueryString();
 
         return ProjectResource::collection($projects);
     }

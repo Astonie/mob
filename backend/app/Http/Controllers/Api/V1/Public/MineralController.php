@@ -15,7 +15,7 @@ class MineralController extends Controller
         if ($request->boolean('featured')) {
             $query->where('is_featured', true);
         }
-        $minerals = $query->orderBy('sort_order')->paginate($request->integer('per_page', 15));
+        $minerals = $query->orderBy('sort_order')->paginate(min($request->integer('per_page', 15), 100));
 
         return MineralResource::collection($minerals);
     }
