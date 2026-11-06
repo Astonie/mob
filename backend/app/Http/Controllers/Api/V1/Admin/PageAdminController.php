@@ -7,6 +7,7 @@ use App\Http\Requests\StorePageRequest;
 use App\Http\Resources\PageResource;
 use App\Models\Page;
 use App\Models\PageBlock;
+use App\Support\Revalidate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -56,6 +57,8 @@ class PageAdminController extends Controller
             }
         }
         $page->load('blocks');
+
+        Revalidate::tags('page:'.$page->slug);
 
         return new PageResource($page);
     }

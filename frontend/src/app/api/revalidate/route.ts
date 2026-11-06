@@ -11,7 +11,14 @@ export async function POST(req: NextRequest) {
   const tag: string | undefined = body.tag;
   const path: string | undefined = body.path;
 
-  if (tag) revalidateTag(tag, "max");
+  if (tag) {
+    revalidateTag(tag, "max");
+    // Also bust the full-route cache for the matching page so edits show immediately.
+    if (tag.startsWith("page:")) {
+      const slug = tag.slice("page:".length);
+      revalidatePath(slug ? `/${slug}` : "/");
+    }
+  }
   if (path) revalidatePath(path);
   if (!tag && !path) {
     revalidateTag("projects", "max");
