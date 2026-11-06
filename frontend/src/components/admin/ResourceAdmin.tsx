@@ -380,7 +380,7 @@ export default function ResourceAdmin({
         </form>
       )}
 
-      <div className="mt-6 overflow-hidden rounded-lg border bg-white shadow-sm">
+      <div className="mt-6 overflow-x-auto rounded-lg border bg-white shadow-sm">
         <table className="w-full text-sm">
           <thead className="border-b bg-slate-50 text-xs text-slate-500">
             <tr>
