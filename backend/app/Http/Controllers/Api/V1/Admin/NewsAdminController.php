@@ -40,37 +40,37 @@ class NewsAdminController extends Controller
         return new NewsResource($article);
     }
 
-    public function show(NewsArticle $newsArticle)
+    public function show(NewsArticle $news)
     {
-        $newsArticle->load(['category', 'tags', 'author']);
+        $news->load(['category', 'tags', 'author']);
 
-        return new NewsResource($newsArticle);
+        return new NewsResource($news);
     }
 
-    public function update(Request $request, NewsArticle $newsArticle)
+    public function update(Request $request, NewsArticle $news)
     {
         $data = $request->validate(['title' => ['sometimes', 'string', 'max:255'], 'slug' => ['sometimes', 'string'], 'excerpt' => ['nullable', 'string'], 'content' => ['nullable', 'string'], 'category_id' => ['nullable', 'ulid', 'exists:categories,id'], 'status' => ['nullable', 'string'], 'is_featured' => ['nullable', 'boolean'], 'published_at' => ['nullable', 'date']]);
         $tags = $data['tags'] ?? null;
         unset($data['tags']);
-        $newsArticle->update($data);
+        $news->update($data);
         if (is_array($tags)) {
-            $newsArticle->tags()->sync($tags);
+            $news->tags()->sync($tags);
         }
 
-        return new NewsResource($newsArticle->fresh()->load(['category', 'tags', 'author']));
+        return new NewsResource($news->fresh()->load(['category', 'tags', 'author']));
     }
 
-    public function destroy(NewsArticle $newsArticle)
+    public function destroy(NewsArticle $news)
     {
-        $newsArticle->delete();
+        $news->delete();
 
         return response()->json(['message' => 'Deleted']);
     }
 
-    public function publish(Request $request, NewsArticle $newsArticle)
+    public function publish(Request $request, NewsArticle $news)
     {
-        $newsArticle->update(['status' => 'published', 'published_at' => now(), 'published_by' => $request->user()->id]);
+        $news->update(['status' => 'published', 'published_at' => now(), 'published_by' => $request->user()->id]);
 
-        return new NewsResource($newsArticle->fresh()->load(['category', 'tags']));
+        return new NewsResource($news->fresh()->load(['category', 'tags']));
     }
 }
