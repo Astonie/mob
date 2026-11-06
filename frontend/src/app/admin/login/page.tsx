@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { MobLogo } from "@/components/ui/logo";
+import { getSiteSettingsSafe, settingString } from "@/lib/api";
 import { clearSession, getToken, setSession, validateToken } from "@/lib/auth";
 
 export default function LoginPage() {
@@ -14,7 +15,19 @@ export default function LoginPage() {
   const [msg, setMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [checking, setChecking] = useState(true);
+  const [logo, setLogo] = useState("/logo-mob.svg");
   const router = useRouter();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const settings = await getSiteSettingsSafe();
+        setLogo(settingString(settings, "site.logo_light", "/logo-mob.svg"));
+      } catch {
+        /* keep default */
+      }
+    })();
+  }, []);
 
   // Already have a valid token (e.g. came back from the public site)? Skip login.
   useEffect(() => {
@@ -73,7 +86,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         <div className="rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
           <div className="flex items-center gap-3">
-            <MobLogo />
+            <MobLogo logoLight={logo} />
           </div>
           <h1 className="mt-6 font-serif text-2xl font-bold text-[#0a1f2e]">CMS Login</h1>
           <form onSubmit={onSubmit} className="mt-6 space-y-4">
