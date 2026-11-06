@@ -77,7 +77,7 @@ export function CoreServicesSection({
           {coreServices.map((service) => (
             <Link
               key={service.key}
-              href="/services#core-services"
+              href={service.href ?? "/services#core-services"}
               className="group flex flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:border-[#0F4A6B]/40 hover:shadow-lg"
             >
               <span className="font-serif text-[13px] font-bold tracking-widest text-[#0F4A6B]">{service.key}</span>

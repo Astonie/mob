@@ -1,6 +1,7 @@
+import Link from "next/link";
 import { Reveal } from "@/components/motion/Reveal";
 
-type Card = { title: string; text: string };
+type Card = { title: string; text: string; url?: string };
 
 const FALLBACK: Card[] = [
   { title: "Safety", text: "Zero harm, TRIFR 1.2" },
@@ -21,8 +22,8 @@ export function CardGridBlock({ data }: { data: { title?: string; cards?: Card[]
         </Reveal>
       )}
       <div className="grid md:grid-cols-3 gap-6">
-        {cards.map((c, i) => (
-          <Reveal key={c.title + i} delay={(i % 3) * 100} variant="up">
+        {cards.map((c, i) => {
+          const inner = (
             <div className="card-interactive group relative h-full overflow-hidden rounded-xl border border-slate-200 bg-white p-6">
               <span className="absolute inset-x-0 top-0 h-[3px] origin-left scale-x-0 bg-gradient-to-r from-[#0F4A6B] to-[#2A7FA3] transition-transform duration-500 group-hover:scale-x-100" />
               <span className="pointer-events-none absolute -right-1 -top-4 font-serif text-[64px] font-bold leading-none text-slate-100 select-none transition-colors duration-500 group-hover:text-[#0F4A6B]/10">
@@ -37,8 +38,13 @@ export function CardGridBlock({ data }: { data: { title?: string; cards?: Card[]
                 </svg>
               </span>
             </div>
-          </Reveal>
-        ))}
+          );
+          return (
+            <Reveal key={c.title + i} delay={(i % 3) * 100} variant="up">
+              {c.url ? <Link href={c.url} className="block h-full">{inner}</Link> : inner}
+            </Reveal>
+          );
+        })}
       </div>
     </section>
   );

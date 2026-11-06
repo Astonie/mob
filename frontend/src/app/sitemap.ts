@@ -8,15 +8,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages = ["", "/about", "/services", "/team", "/news", "/careers", "/contact", "/search"];
   let dynamic: MetadataRoute.Sitemap = [];
   try {
-    const [projects, minerals, news] = await Promise.all([
+    const [projects, minerals, news, pages] = await Promise.all([
       fetch(`${api}/api/v1/projects?per_page=100`).then((r) => r.json()).catch(() => ({ data: [] })),
       fetch(`${api}/api/v1/minerals?per_page=100`).then((r) => r.json()).catch(() => ({ data: [] })),
       fetch(`${api}/api/v1/news?per_page=100`).then((r) => r.json()).catch(() => ({ data: [] })),
+      fetch(`${api}/api/v1/pages`).then((r) => r.json()).catch(() => ({ data: [] })),
     ]);
     const pData = projects.data?.data ?? projects.data ?? [];
     const mData = minerals.data?.data ?? minerals.data ?? [];
     const nData = news.data?.data ?? news.data ?? [];
+    const pgData = Array.isArray(pages.data) ? pages.data : [];
+    const pageSlugs = pgData.map((p: { slug: string }) => p.slug).filter((s: string) => s && s !== "home");
     dynamic = [
+      ...pageSlugs.map((s: string) => ({ url: `${base}/${s}`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.7 })),
       ...pData.map((p: { slug: string; updated_at?: string }) => ({ url: `${base}/projects/${p.slug}`, lastModified: p.updated_at ? new Date(p.updated_at) : new Date(), changeFrequency: "weekly" as const, priority: 0.8 })),
       ...mData.map((m: { slug: string }) => ({ url: `${base}/minerals/${m.slug}`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.6 })),
       ...nData.map((n: { slug: string; updated_at?: string }) => ({ url: `${base}/news/${n.slug}`, lastModified: n.updated_at ? new Date(n.updated_at) : new Date(), changeFrequency: "daily" as const, priority: 0.7 })),

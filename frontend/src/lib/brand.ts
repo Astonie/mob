@@ -41,36 +41,43 @@ export const coreServices = [
   {
     key: "01",
     title: "Geological Services",
+    href: "/geological-services",
     description: "Geological mapping, prospecting, structural studies & resource evaluation.",
   },
   {
     key: "02",
     title: "Mineral Exploration",
+    href: "/mineral-exploration",
     description: "Exploration planning, geochemical sampling, drilling supervision & reporting.",
   },
   {
     key: "03",
     title: "Surveying, GIS & Remote Sensing",
+    href: "/surveying-gis-remote-sensing",
     description: "Topographic surveys, drone mapping, GIS analysis & spatial solutions.",
   },
   {
     key: "04",
     title: "Geophysical Services",
+    href: "/geophysical-services",
     description: "Magnetic, electrical & EM surveys with professional data interpretation.",
   },
   {
     key: "05",
     title: "Mining Consultancy",
+    href: "/mining-consultancy",
     description: "Mine planning, feasibility studies, due diligence & technical advisory services.",
   },
   {
     key: "06",
     title: "Environmental & Regulatory Services",
+    href: "/environmental-regulatory-services",
     description: "Environmental assessments, compliance support, licensing & rehabilitation planning.",
   },
   {
     key: "07",
     title: "Project Management & Technical Support",
+    href: "/project-management-technical-support",
     description: "Project management, HSE, technical reporting, field logistics & data management.",
   },
 ] as const;
