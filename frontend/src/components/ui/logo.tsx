@@ -18,6 +18,9 @@ export function MobLogo({
   const icon = mediaSrc(logoIcon || logoLight) || "/logo-mob.svg";
   const light = mediaSrc(logoLight) || "/logo-mob.svg";
 
+  // An uploaded/custom logo is treated as a full lockup (image only, no wordmark).
+  const isCustom = (src: string) => !src.endsWith("/logo-mob.svg") && src !== "/logo-mob.svg";
+
   if (variant === "icon") {
     return (
       <Image
@@ -25,13 +28,25 @@ export function MobLogo({
         alt="Mob Limited"
         width={200}
         height={130}
-        className={`h-14 w-auto shrink-0 ${className}`}
+        className={`h-14 w-auto shrink-0 object-contain ${className}`}
         unoptimized
       />
     );
   }
 
   if (variant === "dark") {
+    if (isCustom(dark)) {
+      return (
+        <Image
+          src={dark}
+          alt="Mob Limited"
+          width={200}
+          height={130}
+          className={`h-12 w-auto shrink-0 object-contain ${className}`}
+          unoptimized
+        />
+      );
+    }
     return (
       <div className={`flex items-center gap-3 ${className}`}>
         <Image
@@ -39,7 +54,7 @@ export function MobLogo({
           alt="Mob Limited"
           width={200}
           height={130}
-          className="h-14 w-auto shrink-0"
+          className="h-14 w-auto shrink-0 object-contain"
           unoptimized
         />
         <div className="leading-none">
@@ -50,6 +65,19 @@ export function MobLogo({
     );
   }
 
+  if (isCustom(light)) {
+    return (
+      <Image
+        src={light}
+        alt="Mob Limited"
+        width={200}
+        height={130}
+        className={`h-12 w-auto shrink-0 object-contain ${className}`}
+        unoptimized
+      />
+    );
+  }
+
   return (
     <div className={`flex items-center gap-3 ${className}`}>
       <Image
@@ -57,7 +85,7 @@ export function MobLogo({
         alt="Mob Limited"
         width={200}
         height={130}
-        className="h-14 w-auto shrink-0"
+        className="h-14 w-auto shrink-0 object-contain"
         unoptimized
       />
       <div className="leading-none">
