@@ -47,12 +47,12 @@
   </div>
 </section>
 
-<section class="border-y border-slate-200 bg-white">
+<section class="border-y border-slate-200 bg-white dark:bg-[#0a1f2e]/50 dark:border-white/10">
   <div class="mx-auto max-w-7xl px-6 lg:px-8 py-9 grid grid-cols-2 lg:grid-cols-4 gap-8">
     @foreach([['Projects Delivered','120+'],['Years in SADC','10+'],['JORC Resources Defined','2.1 Bt'],['SADC Countries','8']] as [$label,$value])
       <div class="border-l-[3px] border-[#0F4A6B] pl-5">
-        <div class="font-serif text-[28px] font-bold text-[#0a1f2e] leading-none" data-countup="{{ $value }}">{{ $value }}</div>
-        <div class="text-[11px] tracking-[0.16em] text-slate-500 mt-2 font-medium">{{ strtoupper($label) }}</div>
+        <div class="font-serif text-[28px] font-bold text-[#0a1f2e] dark:text-white leading-none" data-countup="{{ $value }}">{{ $value }}</div>
+        <div class="text-[11px] tracking-[0.16em] text-slate-500 dark:text-slate-400 mt-2 font-medium">{{ strtoupper($label) }}</div>
       </div>
     @endforeach
   </div>
@@ -73,11 +73,11 @@
   </div>
   <div class="max-w-2xl">
     <p class="text-[11px] tracking-[0.22em] text-[#0F4A6B] font-bold">OUR CORE SERVICES</p>
-    <h2 class="mt-3 font-serif text-3xl font-bold tracking-tight text-[#0a1f2e]">Seven disciplines. One integrated team.</h2>
+    <h2 class="mt-3 font-serif text-3xl font-bold tracking-tight text-[#0a1f2e] dark:text-white">Seven disciplines. One integrated team.</h2>
   </div>
   <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
     @foreach(\App\Models\Page::where('status','published')->whereIn('slug',['geological-services','mineral-exploration','surveying-gis-remote-sensing','geophysical-services','mining-consultancy','environmental-regulatory-services','project-management-technical-support'])->orderBy('sort_order')->get() as $svc)
-      <a href="/services/{{ $svc->slug }}" class="group card-lift flex flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <a href="/services/{{ $svc->slug }}" class="group card-lift flex flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm dark:bg-white/5 dark:border-white/10">
         <span class="font-serif text-[13px] font-bold tracking-widest text-[#0F4A6B]">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
         <h3 class="mt-3 font-serif text-[17px] font-bold leading-tight text-[#0a1f2e] group-hover:text-[#0F4A6B]">{{ $svc->title }}</h3>
         <p class="mt-2.5 flex-1 text-[13px] leading-6 text-slate-600">{{ $svc->excerpt }}</p>

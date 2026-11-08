@@ -30,6 +30,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: { serif: ['"Playfair Display"', 'Georgia', 'serif'], sans: ['"DM Sans"', 'system-ui', 'sans-serif'] },
@@ -53,8 +54,18 @@
     .marquee-track { display: flex; animation: marquee 30s linear infinite; }
     @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
   </style>
+  <script>
+    (function () {
+      try {
+        const t = localStorage.getItem('theme');
+        if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        }
+      } catch (e) {}
+    })();
+  </script>
 </head>
-<body class="min-h-screen bg-white text-[#0f1f2e] antialiased">
+<body class="min-h-screen bg-white text-[#0f1f2e] antialiased dark:bg-[#0a1f2e] dark:text-slate-100">
   @php
     $publishedSlugs = \App\Models\Page::where('status','published')->pluck('slug')->toArray();
     $navItems = [
@@ -74,7 +85,7 @@
         }
     }
   @endphp
-  <header class="sticky top-0 z-50 border-b border-slate-200/70 bg-white/90 backdrop-blur-xl">
+  <header class="sticky top-0 z-50 border-b border-slate-200/70 bg-white/90 backdrop-blur-xl dark:border-white/10 dark:bg-[#0a1f2e]/90">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
       <div class="flex h-[72px] items-center justify-between gap-8">
         <a href="/" class="flex items-center gap-3 shrink-0">
@@ -92,6 +103,10 @@
           @endforeach
         </nav>
         <div class="flex items-center gap-2.5">
+          <button id="themeToggle" class="flex h-10 w-10 items-center justify-center rounded-lg hover:bg-slate-100 dark:hover:bg-white/10" aria-label="Toggle theme">
+            <svg class="h-5 w-5 hidden dark:block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            <svg class="h-5 w-5 block dark:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+          </button>
           <a href="/contact" class="hidden sm:inline-flex h-10 px-6 items-center justify-center bg-[#0F4A6B] text-white text-[13px] font-semibold rounded-lg hover:bg-[#0a334d]">Contact Us</a>
           <button id="mobileMenuBtn" class="lg:hidden flex h-10 w-10 items-center justify-center rounded-lg hover:bg-slate-100" aria-label="Open menu">
             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
@@ -112,7 +127,7 @@
   <main id="main-content">
     @yield('content')
   </main>
-  <footer class="border-t border-slate-200 bg-[#0a1f2e] text-slate-300 mt-16">
+  <footer class="border-t border-slate-200 bg-[#0a1f2e] text-slate-300 mt-16 dark:border-white/10">
     <div class="mx-auto max-w-7xl px-6 lg:px-8 py-14">
       <div class="grid gap-10 lg:grid-cols-12">
         <div class="lg:col-span-5">
@@ -176,6 +191,15 @@
 
   <script>
     (function () {
+      // Theme toggle
+      const themeBtn = document.getElementById('themeToggle');
+      if (themeBtn) {
+        themeBtn.addEventListener('click', () => {
+          const isDark = document.documentElement.classList.toggle('dark');
+          localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+      }
+
       // Mobile menu toggle
       const mobileBtn = document.getElementById('mobileMenuBtn');
       const mobileMenu = document.getElementById('mobileMenu');
