@@ -32,7 +32,12 @@ class MineralForm
                     ->columnSpanFull(),
                 TextInput::make('color'),
                 FileUpload::make('featured_image')
-                    ->image(),
+                    ->image()
+                    ->disk('public')
+                    ->directory('minerals')
+                    ->visibility('public')
+                    ->maxSize(4096)
+                    ->fetchFileInformation(false),
                 Toggle::make('is_featured')
                     ->required(),
                 Toggle::make('is_active')

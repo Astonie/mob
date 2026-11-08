@@ -30,8 +30,8 @@ class EsgContentForm
                     ->disk('public')
                     ->directory('esg')
                     ->visibility('public')
-                    ->imageEditor()
-                    ->maxSize(4096),
+                    ->maxSize(4096)
+                    ->fetchFileInformation(false),
                 TextInput::make('metrics'),
                 TextInput::make('sort_order')
                     ->required()

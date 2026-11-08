@@ -32,8 +32,8 @@ class LeadershipProfileForm
                     ->disk('public')
                     ->directory('leadership')
                     ->visibility('public')
-                    ->imageEditor()
-                    ->maxSize(2048),
+                    ->maxSize(2048)
+                    ->fetchFileInformation(false),
                 TextInput::make('email')
                     ->label('Email address')
                     ->email(),

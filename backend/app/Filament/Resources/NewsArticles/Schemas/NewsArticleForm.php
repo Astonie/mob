@@ -30,15 +30,16 @@ class NewsArticleForm
                     ->disk('public')
                     ->directory('news')
                     ->visibility('public')
-                    ->imageEditor()
-                    ->maxSize(4096),
+                    ->maxSize(4096)
+                    ->fetchFileInformation(false),
                 FileUpload::make('gallery')
                     ->image()
                     ->multiple()
                     ->disk('public')
                     ->directory('news/gallery')
                     ->visibility('public')
-                    ->maxSize(4096),
+                    ->maxSize(4096)
+                    ->fetchFileInformation(false),
                 TextInput::make('status')
                     ->required()
                     ->default('draft'),

@@ -23,8 +23,8 @@ class SiteSettingForm
                     ->disk('public')
                     ->directory('settings')
                     ->visibility('public')
-                    ->imageEditor()
                     ->maxSize(4096)
+                    ->fetchFileInformation(false)
                     ->visible(fn ($get) => $get('type') === 'image'),
                 TextInput::make('type')
                     ->required()
