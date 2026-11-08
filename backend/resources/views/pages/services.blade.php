@@ -2,7 +2,14 @@
 @section('title','Our Services | Mob Limited')
 @section('content')
 <section class="relative overflow-hidden bg-[#061a2a] text-white py-20">
-  <div class="absolute inset-0 bg-gradient-to-br from-[#0a2e4a] via-[#0F4A6B] to-[#0a1f2e]"></div>
+  @if(!empty($page->hero_image))
+    <div class="absolute inset-0">
+      <img src="/storage/{{ $page->hero_image }}" alt="" class="h-full w-full object-cover opacity-30">
+      <div class="absolute inset-0 bg-gradient-to-b from-[#0a1f2e]/60 via-[#0a1f2e]/80 to-[#0a1f2e]"></div>
+    </div>
+  @else
+    <div class="absolute inset-0 bg-gradient-to-br from-[#0a2e4a] via-[#0F4A6B] to-[#0a1f2e]"></div>
+  @endif
   <div class="relative mx-auto max-w-7xl px-6 lg:px-8">
     <p class="text-[11px] tracking-[0.22em] text-white/70 font-semibold">OUR CORE SERVICES</p>
     <h1 class="mt-5 font-serif text-4xl lg:text-5xl font-bold">Our Core Services</h1>

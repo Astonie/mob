@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Pages\Schemas;
 
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -23,6 +24,13 @@ class PageForm
                     ->default('default'),
                 Textarea::make('excerpt')
                     ->columnSpanFull(),
+                FileUpload::make('hero_image')
+                    ->image()
+                    ->disk('public')
+                    ->directory('pages')
+                    ->visibility('public')
+                    ->maxSize(4096)
+                    ->fetchFileInformation(false),
                 TextInput::make('status')
                     ->required()
                     ->default('draft'),

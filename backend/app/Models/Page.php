@@ -13,7 +13,7 @@ class Page extends Model
     use Auditable, HasFactory, HasUlids, SoftDeletes;
 
     protected $fillable = [
-        'title', 'slug', 'template', 'excerpt', 'status', 'is_homepage',
+        'title', 'slug', 'template', 'excerpt', 'hero_image', 'status', 'is_homepage',
         'show_in_navigation', 'sort_order', 'published_at', 'scheduled_at',
         'seo_data', 'created_by', 'updated_by', 'published_by',
     ];
