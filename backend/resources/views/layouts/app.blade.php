@@ -65,7 +65,8 @@
     })();
   </script>
 </head>
-<body class="min-h-screen bg-white dark:bg-[#112233] text-[#0f1f2e] antialiased dark:bg-[#0a1f2e] dark:text-slate-100">
+<body class="min-h-screen bg-white text-[#0f1f2e] antialiased dark:bg-[#0a1f2e] dark:text-slate-100">
+  <div id="readingProgress" class="fixed top-0 left-0 z-[60] h-[3px] w-0 bg-[#0F4A6B] transition-all duration-150"></div>
   @php
     $publishedSlugs = \App\Models\Page::where('status','published')->pluck('slug')->toArray();
     $navItems = [
@@ -199,6 +200,16 @@
 
   <script>
     (function () {
+      // Reading progress bar
+      const progressBar = document.getElementById('readingProgress');
+      if (progressBar) {
+        window.addEventListener('scroll', () => {
+          const h = document.documentElement.scrollHeight - window.innerHeight;
+          const p = h > 0 ? (window.scrollY / h) * 100 : 0;
+          progressBar.style.width = p + '%';
+        }, { passive: true });
+      }
+
       // Theme toggle
       const themeBtn = document.getElementById('themeToggle');
       if (themeBtn) {

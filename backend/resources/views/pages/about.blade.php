@@ -11,6 +11,7 @@
     <div class="absolute inset-0 bg-gradient-to-br from-[#0a2e4a] via-[#0F4A6B] to-[#0a1f2e]"></div>
   @endif
   <div class="relative mx-auto max-w-7xl px-6 lg:px-8">
+    <nav class="text-[12px] text-white/60 mb-4"><a href="/" class="hover:text-white">Home</a> <span class="mx-2">/</span> <span class="text-white/90">About</span></nav>
     <p class="text-[11px] tracking-[0.22em] text-white/70 font-semibold">MALAWI • SADC • COPPERBELT</p>
     <h1 class="mt-5 font-serif text-4xl lg:text-5xl font-bold">About Mob Limited</h1>
     <p class="mt-4 text-white/80 max-w-2xl">Malawi-based, SADC-wide. From greenfield exploration to mine development — we de-risk your resource with world-class technical excellence.</p>
