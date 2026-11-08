@@ -1,3 +1,4 @@
+AddHandler application/x-httpd-alt-php84 .php
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
@@ -25,4 +26,3 @@
 </IfModule>
 
 # Hostinger shared hosting: use PHP 8.4
-AddHandler application/x-httpd-alt-php84 .php
