@@ -16,6 +16,7 @@
     if (!str_starts_with($logoLight, '/') && !str_starts_with($logoLight, 'http')) {
         $logoLight = '/storage/' . ltrim($logoLight, '/');
     }
+    $isCustomLogo = ($logoLight !== '/logo-mob.svg');
     $favicon = $logoLight;
   @endphp
   <link rel="icon" href="{{ $favicon }}" sizes="any">
@@ -77,11 +78,13 @@
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
       <div class="flex h-[72px] items-center justify-between gap-8">
         <a href="/" class="flex items-center gap-3 shrink-0">
-          <img loading="lazy" src="{{ $logoLight }}" alt="Mob Limited" class="h-12 w-auto shrink-0 object-contain">
-          <div class="leading-none">
-            <div class="font-black tracking-[0.14em] text-[#22262B] text-[15px]">MOB LIMITED</div>
-            <div class="text-[9px] tracking-[0.08em] text-[#0F4A6B] font-medium">Integrated Mining &amp; Mineral Solutions</div>
-          </div>
+          <img loading="lazy" src="{{ $logoLight }}" alt="Mob Limited" class="h-14 w-auto shrink-0 object-contain">
+          @if(!$isCustomLogo)
+            <div class="leading-none">
+              <div class="font-black tracking-[0.14em] text-[#22262B] text-[15px]">MOB LIMITED</div>
+              <div class="text-[9px] tracking-[0.08em] text-[#0F4A6B] font-medium">Integrated Mining &amp; Mineral Solutions</div>
+            </div>
+          @endif
         </a>
         <nav class="hidden lg:flex items-center gap-1" id="main-nav">
           @foreach($visibleNav as [$url, $label])
@@ -115,10 +118,12 @@
         <div class="lg:col-span-5">
           <div class="flex items-center gap-3">
             <img loading="lazy" src="{{ $logoLight }}" alt="Mob Limited" class="h-12 w-auto shrink-0 object-contain">
-            <div class="leading-none">
-              <div class="font-black tracking-[0.12em] text-white text-[15px]">MOB LIMITED</div>
-              <div class="text-[9px] tracking-[0.08em] text-white/70 font-medium">Integrated Mining &amp; Mineral Solutions</div>
-            </div>
+            @if(!$isCustomLogo)
+              <div class="leading-none">
+                <div class="font-black tracking-[0.12em] text-white text-[15px]">MOB LIMITED</div>
+                <div class="text-[9px] tracking-[0.08em] text-white/70 font-medium">Integrated Mining &amp; Mineral Solutions</div>
+              </div>
+            @endif
           </div>
           <p class="mt-4 font-serif text-[15px] italic text-[#7cc4e3]">Exploring Potential. Delivering Value.</p>
           <p class="mt-4 text-sm leading-7 text-slate-400 max-w-md">Malawi-based, SADC-wide. From greenfield exploration in Lilongwe to mine development across the Copperbelt — JORC-compliant technical excellence across 8 SADC countries.</p>
