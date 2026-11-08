@@ -11,9 +11,16 @@
   <meta property="og:url" content="{{ url()->current() }}">
   <meta property="og:site_name" content="Mob Limited">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" href="/favicon.ico" sizes="any">
-  <link rel="icon" href="/logo-mob.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="/logo-mob.svg">
+  @php
+    $logoLight = \App\Models\SiteSetting::where('key','site.logo_light')->value('value') ?: '/logo-mob.svg';
+    if (!str_starts_with($logoLight, '/') && !str_starts_with($logoLight, 'http')) {
+        $logoLight = '/storage/' . ltrim($logoLight, '/');
+    }
+    $favicon = $logoLight;
+  @endphp
+  <link rel="icon" href="{{ $favicon }}" sizes="any">
+  <link rel="icon" href="{{ $favicon }}" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="{{ $favicon }}">
   <link rel="canonical" href="{{ url()->current() }}">
   @stack('head')
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -70,7 +77,7 @@
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
       <div class="flex h-[72px] items-center justify-between gap-8">
         <a href="/" class="flex items-center gap-3 shrink-0">
-          <img loading="lazy" src="/logo-mob.svg" alt="Mob Limited" class="h-12 w-auto shrink-0">
+          <img loading="lazy" src="{{ $logoLight }}" alt="Mob Limited" class="h-12 w-auto shrink-0 object-contain">
           <div class="leading-none">
             <div class="font-black tracking-[0.14em] text-[#22262B] text-[15px]">MOB LIMITED</div>
             <div class="text-[9px] tracking-[0.08em] text-[#0F4A6B] font-medium">Integrated Mining &amp; Mineral Solutions</div>
@@ -107,7 +114,7 @@
       <div class="grid gap-10 lg:grid-cols-12">
         <div class="lg:col-span-5">
           <div class="flex items-center gap-3">
-            <img loading="lazy" src="/logo-mob.svg" alt="Mob Limited" class="h-12 w-auto shrink-0">
+            <img loading="lazy" src="{{ $logoLight }}" alt="Mob Limited" class="h-12 w-auto shrink-0 object-contain">
             <div class="leading-none">
               <div class="font-black tracking-[0.12em] text-white text-[15px]">MOB LIMITED</div>
               <div class="text-[9px] tracking-[0.08em] text-white/70 font-medium">Integrated Mining &amp; Mineral Solutions</div>

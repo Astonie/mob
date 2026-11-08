@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\Widgets\LatestNews;
 use App\Filament\Widgets\StatsOverview;
+use App\Models\SiteSetting;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -35,9 +36,29 @@ class AdminPanelProvider extends PanelProvider
                 'gray' => Color::Slate,
             ])
             ->brandName('Mob Limited CMS')
-            ->brandLogo(asset('logo-mob.svg'))
+            ->brandLogo(function () {
+                $value = SiteSetting::where('key', 'site.logo_light')->value('value');
+                if (! $value) {
+                    return asset('logo-mob.svg');
+                }
+                if (str_starts_with($value, 'http') || str_starts_with($value, '/')) {
+                    return str_starts_with($value, '/') ? asset(ltrim($value, '/')) : $value;
+                }
+
+                return asset('storage/'.ltrim($value, '/'));
+            })
             ->brandLogoHeight('2.5rem')
-            ->favicon(asset('favicon.ico'))
+            ->favicon(function () {
+                $value = SiteSetting::where('key', 'site.logo_light')->value('value');
+                if (! $value) {
+                    return asset('favicon.ico');
+                }
+                if (str_starts_with($value, 'http') || str_starts_with($value, '/')) {
+                    return str_starts_with($value, '/') ? asset(ltrim($value, '/')) : $value;
+                }
+
+                return asset('storage/'.ltrim($value, '/'));
+            })
             ->darkMode(false)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')

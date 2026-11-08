@@ -31,8 +31,8 @@ class StatsOverview extends StatsOverviewWidget
             Stat::make('Leadership', LeadershipProfile::where('is_active', true)->count())
                 ->description('Active profiles')
                 ->color('primary'),
-            Stat::make('Visitors', VisitorLog::count())
-                ->description('Tracked page views')
+            Stat::make('Unique Visitors', VisitorLog::distinct('ip_address')->count('ip_address'))
+                ->description('Today: '.VisitorLog::whereDate('created_at', today())->distinct('ip_address')->count('ip_address'))
                 ->color('info'),
         ];
     }

@@ -18,6 +18,13 @@ class TrackVisitor
         if ($request->isMethod('GET') && ! $request->is('admin/*', 'api/*', 'storage/*', '*.css', '*.js', '*.png', '*.jpg', '*.svg', '*.ico')) {
             try {
                 $ip = $request->ip();
+
+                // Track unique visitors only (one log per IP per 24 hours).
+                if (Cache::has("visitor:{$ip}")) {
+                    return $response;
+                }
+                Cache::put("visitor:{$ip}", true, 86400);
+
                 [$country, $city] = $this->locate($ip);
                 VisitorLog::create([
                     'ip_address' => $ip,
