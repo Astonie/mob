@@ -23,3 +23,6 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+# Hostinger shared hosting: use PHP 8.4
+AddHandler application/x-httpd-alt-php84 .php
