@@ -86,6 +86,23 @@
   </div>
 </section>
 
+<section class="mx-auto max-w-7xl px-6 lg:px-8 py-16">
+  <div class="max-w-2xl mb-10">
+    <p class="text-[11px] tracking-[0.22em] text-[#0F4A6B] font-bold">THE VALUE CHAIN</p>
+    <h2 class="mt-3 font-serif text-3xl font-bold tracking-tight text-[#0a1f2e]">We provide end-to-end solutions across the mining value chain.</h2>
+    <p class="mt-4 text-[15px] leading-7 text-slate-600">One integrated team takes you from first geological mapping through to delivery — across Malawi, the Copperbelt and the wider SADC region.</p>
+  </div>
+  <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    @foreach([['01','Explore','Geological mapping, targeting and early-stage evaluation.'],['02','Evaluate','Resource definition, technical studies and due diligence.'],['03','Develop','Mine planning, permitting and project delivery.'],['04','Deliver','Owner’s team support, HSE, reporting and field logistics.']] as [$n,$t,$d])
+      <div class="relative rounded-2xl border border-slate-200 bg-white p-7 shadow-sm card-lift">
+        <span class="font-serif text-4xl font-bold text-[#0F4A6B]/20">{{ $n }}</span>
+        <h3 class="mt-3 font-serif text-lg font-bold text-[#0a1f2e]">{{ $t }}</h3>
+        <p class="mt-2 text-sm leading-6 text-slate-600">{{ $d }}</p>
+      </div>
+    @endforeach
+  </div>
+</section>
+
 <section class="bg-[#f8f9fb] border-y border-slate-200">
   <div class="mx-auto max-w-7xl px-6 lg:px-8 py-16">
     <div class="grid lg:grid-cols-2 gap-8 items-center mb-12">
@@ -113,6 +130,19 @@
           <p class="mt-2 text-[13px] leading-5 text-slate-600">{{ $m->summary }}</p>
         </div>
       @endforeach
+    </div>
+  </div>
+</section>
+
+<section class="mx-auto max-w-7xl px-6 lg:px-8 pb-16">
+  <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0d3d59] via-[#0F4A6B] to-[#0a2e4a] px-8 lg:px-16 py-16 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 shadow-2xl shadow-[#0F4A6B]/30">
+    <div>
+      <h2 class="font-serif text-3xl lg:text-4xl font-bold text-white leading-tight">Ready to de-risk your next project?</h2>
+      <p class="mt-3 text-white/80 text-[16px] max-w-xl">Talk to our Lilongwe team. Response within one business day.</p>
+    </div>
+    <div class="flex flex-wrap gap-3 shrink-0">
+      <a href="/contact" class="inline-flex h-12 px-8 items-center rounded-lg bg-white text-[#0F4A6B] text-[13px] font-bold hover:bg-white/90 transition-colors shadow-lg">Get in touch →</a>
+      <a href="/services" class="inline-flex h-12 px-8 items-center rounded-lg border border-white/30 text-white text-[13px] font-bold hover:bg-white/10 transition-colors">Explore services</a>
     </div>
   </div>
 </section>
