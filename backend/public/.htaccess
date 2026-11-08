@@ -1,4 +1,8 @@
 AddHandler application/x-httpd-alt-php84 .php
+
+# Redirect www to non-www (Hostinger)
+RewriteCond %{HTTP_HOST} ^www\.mobmining\.com$ [NC]
+RewriteRule ^(.*)$ https://mobmining.com/$1 [L,R=301]
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
