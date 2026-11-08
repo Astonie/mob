@@ -60,6 +60,8 @@ cd ~/public_html/api
 composer install --no-dev --optimize-autoloader
 php artisan key:generate
 php artisan storage:link
+# If you re-upload via rsync, re-create the storage symlink on the server:
+# rm -f public/storage && ln -s ~/mob-backend/storage/app/public public/storage
 php artisan migrate --force
 php artisan db:seed --force
 php artisan config:cache
