@@ -52,7 +52,7 @@
   <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
     @foreach(\App\Models\Page::where('status','published')->whereNotIn('slug',['home','about','services','news','careers','contact','privacy','terms'])->orderBy('sort_order')->get() as $svc)
       <a href="/services/{{ $svc->slug }}" class="group card-lift flex flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <span class="font-serif text-[13px] font-bold tracking-widest text-[#0F4A6B]">{{ $svc->sort_order ? str_pad($svc->sort_order,2,'0',STR_PAD_LEFT) : '' }}</span>
+        <span class="font-serif text-[13px] font-bold tracking-widest text-[#0F4A6B]">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
         <h3 class="mt-3 font-serif text-[17px] font-bold leading-tight text-[#0a1f2e] group-hover:text-[#0F4A6B]">{{ $svc->title }}</h3>
         <p class="mt-2.5 flex-1 text-[13px] leading-6 text-slate-600">{{ $svc->excerpt }}</p>
       </a>
