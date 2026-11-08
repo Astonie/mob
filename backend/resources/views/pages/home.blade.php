@@ -4,7 +4,10 @@
 
 @section('content')
 <section class="relative overflow-hidden bg-[#061a2a] text-white">
-  <div class="absolute inset-0 bg-gradient-to-br from-[#0a2e4a] via-[#0F4A6B] to-[#0a1f2e]"></div>
+  <div class="absolute inset-0">
+    <img src="https://images.unsplash.com/photo-1513828583688-c52646db42da?w=1600&auto=format&fit=crop&q=80" alt="" class="h-full w-full object-cover opacity-30">
+    <div class="absolute inset-0 bg-gradient-to-b from-[#0a1f2e]/60 via-[#0a1f2e]/80 to-[#0a1f2e]"></div>
+  </div>
   <div class="relative mx-auto max-w-7xl px-6 lg:px-8 py-24 lg:py-32">
     <p class="text-[11px] tracking-[0.22em] text-white/70 font-semibold flex items-center gap-3"><span class="h-px w-8 bg-white/40"></span> MALAWI • SADC • COPPERBELT</p>
     <h1 class="mt-5 font-serif text-5xl lg:text-[52px] font-bold tracking-tight leading-[1.02]">Integrated Mining<br>and Mineral<br>Consultancy</h1>
@@ -27,7 +30,17 @@
   </div>
 </section>
 
-<section class="mx-auto max-w-7xl px-6 lg:px-8 py-16 reveal">
+<section class="mx-auto max-w-7xl px-6 lg:px-8 py-16">
+  <div class="grid lg:grid-cols-2 gap-8 items-center mb-16">
+    <div>
+      <p class="text-[11px] tracking-[0.22em] text-[#0F4A6B] font-bold">SADC MINING EXCELLENCE</p>
+      <h2 class="mt-3 font-serif text-3xl font-bold tracking-tight text-[#0a1f2e]">From discovery to development</h2>
+      <p class="mt-4 text-[15px] leading-7 text-slate-600">Technical excellence across exploration, resource modelling, mine planning and ESG — trusted by juniors, majors and funds across 8 SADC countries.</p>
+    </div>
+    <div class="relative overflow-hidden rounded-2xl aspect-[4/3] shadow-lg">
+      <img src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=1200&auto=format&fit=crop&q=80" alt="Mining operations" class="h-full w-full object-cover">
+    </div>
+  </div>
   <div class="max-w-2xl">
     <p class="text-[11px] tracking-[0.22em] text-[#0F4A6B] font-bold">OUR CORE SERVICES</p>
     <h2 class="mt-3 font-serif text-3xl font-bold tracking-tight text-[#0a1f2e]">Seven disciplines. One integrated team.</h2>

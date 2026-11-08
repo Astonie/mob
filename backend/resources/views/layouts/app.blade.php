@@ -53,7 +53,23 @@
         </nav>
         <div class="flex items-center gap-2.5">
           <a href="/contact" class="hidden sm:inline-flex h-10 px-6 items-center justify-center bg-[#0F4A6B] text-white text-[13px] font-semibold rounded-lg hover:bg-[#0a334d]">Contact Us</a>
+          <button id="mobileMenuBtn" class="lg:hidden flex h-10 w-10 items-center justify-center rounded-lg hover:bg-slate-100" aria-label="Open menu">
+            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
         </div>
+      </div>
+    </div>
+    <div id="mobileMenu" class="hidden lg:hidden border-t border-slate-200 bg-white">
+      <nav class="px-6 py-4 space-y-1">
+        <a href="/" class="block px-3 py-2.5 rounded-lg text-[15px] font-medium text-slate-700 hover:bg-slate-50 hover:text-[#0F4A6B]">Home</a>
+        <a href="/about" class="block px-3 py-2.5 rounded-lg text-[15px] font-medium text-slate-700 hover:bg-slate-50 hover:text-[#0F4A6B]">About</a>
+        <a href="/services" class="block px-3 py-2.5 rounded-lg text-[15px] font-medium text-slate-700 hover:bg-slate-50 hover:text-[#0F4A6B]">Our Services</a>
+        <a href="/team" class="block px-3 py-2.5 rounded-lg text-[15px] font-medium text-slate-700 hover:bg-slate-50 hover:text-[#0F4A6B]">Our Team</a>
+        <a href="/news" class="block px-3 py-2.5 rounded-lg text-[15px] font-medium text-slate-700 hover:bg-slate-50 hover:text-[#0F4A6B]">News</a>
+        <a href="/careers" class="block px-3 py-2.5 rounded-lg text-[15px] font-medium text-slate-700 hover:bg-slate-50 hover:text-[#0F4A6B]">Careers</a>
+        <a href="/contact" class="block px-3 py-2.5 rounded-lg text-[15px] font-medium text-slate-700 hover:bg-slate-50 hover:text-[#0F4A6B]">Contact</a>
+      </nav>
+    </div>
       </div>
     </div>
   </header>
@@ -123,6 +139,13 @@
 
   <script>
     (function () {
+      // Mobile menu toggle
+      const mobileBtn = document.getElementById('mobileMenuBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      if (mobileBtn && mobileMenu) {
+        mobileBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+      }
+
       // Active nav indicator
       const path = window.location.pathname.replace(/\/$/, '') || '/';
       document.querySelectorAll('#main-nav a').forEach((a) => {
