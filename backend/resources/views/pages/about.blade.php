@@ -20,14 +20,14 @@
   <div class="grid lg:grid-cols-12 gap-10 items-start">
     <div class="lg:col-span-7">
       <p class="text-[11px] tracking-[0.22em] text-[#0F4A6B] font-bold">OUR STORY</p>
-      <h2 class="mt-3 font-serif text-3xl font-bold tracking-tight text-[#0a1f2e]">Malawi-based. SADC-wide. Built for the Copperbelt and beyond.</h2>
-      <div class="mt-6 space-y-4 text-[16px] leading-8 text-slate-700">
+      <h2 class="mt-3 font-serif text-3xl font-bold tracking-tight text-[#0a1f2e] dark:text-white">Malawi-based. SADC-wide. Built for the Copperbelt and beyond.</h2>
+      <div class="mt-6 space-y-4 text-[16px] leading-8 text-slate-700 dark:text-slate-200">
         <p>Headquartered in <strong>Lilongwe, Malawi</strong>, Mob Limited is an integrated mining and mineral consultancy serving the entire SADC region. With over a decade of experience and 120+ projects delivered, we provide JORC, NI 43-101 and SAMREC compliant technical services across the full mining value chain.</p>
         <p>From our headquarters in Lilongwe, we support exploration, resource estimation, mine planning, ESG and permitting across 8 SADC countries — combining Malawian field execution with world-class JORC modelling.</p>
       </div>
       <div class="mt-8 flex flex-wrap gap-3">
         <a href="/services" class="inline-flex h-11 px-6 items-center rounded-lg bg-[#0F4A6B] text-white text-[13px] font-semibold hover:bg-[#0a334d] transition-colors">Our services</a>
-        <a href="/team" class="inline-flex h-11 px-6 items-center rounded-lg border border-slate-300 text-[#0a1f2e] text-[13px] font-semibold hover:bg-slate-50 transition-colors">Meet our team</a>
+        <a href="/team" class="inline-flex h-11 px-6 items-center rounded-lg border border-slate-300 text-[#0a1f2e] dark:text-white text-[13px] font-semibold hover:bg-slate-50 dark:bg-white/5 transition-colors">Meet our team</a>
       </div>
     </div>
     <div class="lg:col-span-5">

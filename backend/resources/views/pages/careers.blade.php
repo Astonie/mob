@@ -12,8 +12,8 @@
     @foreach($careers as $c)
       <a href="/careers/{{ $c->slug }}" class="block border rounded-xl p-6 hover:shadow-lg">
         <h3 class="font-serif text-lg font-bold">{{ $c->title }}</h3>
-        <p class="mt-1 text-sm text-slate-500">{{ $c->location }} · {{ $c->employment_type }}</p>
-        <p class="mt-2 text-sm text-slate-600">{{ $c->summary }}</p>
+        <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">{{ $c->location }} · {{ $c->employment_type }}</p>
+        <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">{{ $c->summary }}</p>
       </a>
     @endforeach
   </div>

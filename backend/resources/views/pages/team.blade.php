@@ -12,7 +12,7 @@
 <section class="mx-auto max-w-7xl px-6 lg:px-8 py-16">
   <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
     @foreach($leaders as $l)
-      <div class="overflow-hidden rounded-xl border border-slate-200 bg-white">
+      <div class="overflow-hidden rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-[#112233]">
         @if($l->photo)
           <div class="relative h-56 w-full overflow-hidden bg-slate-100">
             <img loading="lazy" src="/storage/{{ $l->photo }}" alt="{{ $l->name }}" class="h-full w-full object-cover object-top">
@@ -23,9 +23,9 @@
           </div>
         @endif
         <div class="p-6">
-          <h3 class="font-serif text-[16px] font-bold text-[#0a1f2e]">{{ $l->name }}</h3>
+          <h3 class="font-serif text-[16px] font-bold text-[#0a1f2e] dark:text-white">{{ $l->name }}</h3>
           <p class="mt-1 text-[11px] font-semibold tracking-[0.1em] text-[#0F4A6B] uppercase">{{ $l->position }}</p>
-          @if($l->bio)<p class="mt-3 text-sm leading-6 text-slate-600">{{ $l->bio }}</p>@endif
+          @if($l->bio)<p class="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-300">{{ $l->bio }}</p>@endif
         </div>
       </div>
     @endforeach

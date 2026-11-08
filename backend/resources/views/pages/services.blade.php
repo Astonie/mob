@@ -21,8 +21,8 @@
     @foreach($servicePages as $svc)
       <a href="/services/{{ $svc->slug }}" class="group card-lift block border rounded-xl p-6 shadow-sm">
         <span class="font-serif text-[13px] font-bold tracking-widest text-[#0F4A6B]">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
-        <h3 class="mt-3 font-serif text-[17px] font-bold text-[#0a1f2e] group-hover:text-[#0F4A6B]">{{ $svc->title }}</h3>
-        <p class="mt-2.5 text-[13px] leading-6 text-slate-600">{{ $svc->excerpt }}</p>
+        <h3 class="mt-3 font-serif text-[17px] font-bold text-[#0a1f2e] dark:text-white group-hover:text-[#0F4A6B]">{{ $svc->title }}</h3>
+        <p class="mt-2.5 text-[13px] leading-6 text-slate-600 dark:text-slate-300">{{ $svc->excerpt }}</p>
         <span class="mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold text-[#0F4A6B]">Learn more →</span>
       </a>
     @endforeach

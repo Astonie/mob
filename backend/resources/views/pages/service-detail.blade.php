@@ -20,8 +20,8 @@
     <h1 class="mt-5 font-serif text-4xl lg:text-6xl font-bold tracking-tight leading-[1.05] max-w-3xl">{{ $page->title }}</h1>
     <p class="mt-6 text-lg leading-7 text-white/85 max-w-2xl font-light">{{ $page->excerpt }}</p>
     <div class="mt-8 flex flex-wrap gap-3">
-      <a href="/contact" class="inline-flex h-12 px-8 items-center rounded-lg bg-white text-[#0F4A6B] text-[13px] font-bold hover:bg-white/90 transition shadow-lg">Talk to us</a>
-      <a href="/services" class="inline-flex h-12 px-8 items-center rounded-lg border border-white/30 text-white text-[13px] font-semibold hover:bg-white/10">All services</a>
+      <a href="/contact" class="inline-flex h-12 px-8 items-center rounded-lg bg-white dark:bg-[#112233] text-[#0F4A6B] text-[13px] font-bold hover:bg-white dark:bg-[#112233]/90 transition shadow-lg">Talk to us</a>
+      <a href="/services" class="inline-flex h-12 px-8 items-center rounded-lg border border-white/30 text-white text-[13px] font-semibold hover:bg-white dark:bg-[#112233]/10">All services</a>
     </div>
   </div>
 </section>
@@ -42,26 +42,26 @@
         <p class="text-[11px] tracking-[0.22em] text-white/70 font-bold">READY TO START?</p>
         <h3 class="mt-3 font-serif text-2xl font-bold leading-tight">De-risk your next project with Mob.</h3>
         <p class="mt-3 text-sm leading-6 text-white/80">Talk to our Lilongwe team — response within one business day.</p>
-        <a href="/contact" class="mt-6 inline-flex h-11 w-full items-center justify-center rounded-lg bg-white text-[#0F4A6B] text-[13px] font-bold hover:bg-white/90 transition-colors shadow-lg">Get in touch →</a>
+        <a href="/contact" class="mt-6 inline-flex h-11 w-full items-center justify-center rounded-lg bg-white dark:bg-[#112233] text-[#0F4A6B] text-[13px] font-bold hover:bg-white dark:bg-[#112233]/90 transition-colors shadow-lg">Get in touch →</a>
       </div>
     </div>
   </div>
 </section>
 
-<section class="bg-[#f8f9fb] border-y border-slate-200">
+<section class="bg-[#f8f9fb] dark:bg-white/5 border-y border-slate-200 dark:border-white/10">
   <div class="mx-auto max-w-7xl px-6 lg:px-8 py-16">
     <div class="flex items-end justify-between gap-4 mb-8">
       <div>
         <p class="text-[11px] tracking-[0.22em] text-[#0F4A6B] font-bold">OTHER SERVICES</p>
-        <h2 class="mt-2 font-serif text-2xl font-bold tracking-tight text-[#0a1f2e]">Explore more disciplines</h2>
+        <h2 class="mt-2 font-serif text-2xl font-bold tracking-tight text-[#0a1f2e] dark:text-white">Explore more disciplines</h2>
       </div>
       <a href="/services" class="text-[13px] font-semibold text-[#0F4A6B] hover:underline underline-offset-4">All services →</a>
     </div>
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
       @foreach(\App\Models\Page::where('status','published')->whereIn('slug',['geological-services','mineral-exploration','surveying-gis-remote-sensing','geophysical-services','mining-consultancy','environmental-regulatory-services','project-management-technical-support'])->where('slug','!=',$page->slug)->orderBy('sort_order')->take(3)->get() as $svc)
-        <a href="/services/{{ $svc->slug }}" class="group block border rounded-xl p-6 bg-white shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all">
-          <h3 class="font-serif text-[16px] font-bold text-[#0a1f2e] group-hover:text-[#0F4A6B]">{{ $svc->title }}</h3>
-          <p class="mt-2 text-[13px] leading-6 text-slate-600 line-clamp-3">{{ $svc->excerpt }}</p>
+        <a href="/services/{{ $svc->slug }}" class="group block border rounded-xl p-6 bg-white dark:bg-[#112233] shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all">
+          <h3 class="font-serif text-[16px] font-bold text-[#0a1f2e] dark:text-white group-hover:text-[#0F4A6B]">{{ $svc->title }}</h3>
+          <p class="mt-2 text-[13px] leading-6 text-slate-600 dark:text-slate-300 line-clamp-3">{{ $svc->excerpt }}</p>
           <span class="mt-4 inline-flex items-center gap-1.5 text-[12px] font-semibold text-[#0F4A6B]">Learn more →</span>
         </a>
       @endforeach

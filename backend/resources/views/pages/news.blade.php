@@ -11,7 +11,7 @@
     @foreach($news as $n)
       <a href="/news/{{ $n->slug }}" class="block border rounded-xl p-6 hover:shadow-lg">
         <h3 class="font-serif text-lg font-bold">{{ $n->title }}</h3>
-        <p class="mt-2 text-sm text-slate-600">{{ $n->excerpt }}</p>
+        <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">{{ $n->excerpt }}</p>
       </a>
     @endforeach
   </div>

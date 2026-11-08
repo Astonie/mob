@@ -18,10 +18,10 @@
       @forelse($results as $r)
         <a href="/news/{{ $r->slug }}" class="block border rounded-xl p-6 hover:shadow-lg">
           <h3 class="font-serif text-lg font-bold">{{ $r->title }}</h3>
-          <p class="mt-2 text-sm text-slate-600">{{ $r->excerpt }}</p>
+          <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">{{ $r->excerpt }}</p>
         </a>
       @empty
-        <p class="text-slate-500">No results found for "{{ $q }}".</p>
+        <p class="text-slate-500 dark:text-slate-400">No results found for "{{ $q }}".</p>
       @endforelse
     </div>
   @endif
