@@ -44,6 +44,10 @@ Route::get('/team', function () {
 });
 
 Route::get('/news', function () {
+    $page = Page::where('slug', 'news')->first();
+    if ($page && $page->status !== 'published') {
+        abort(404);
+    }
     $news = NewsArticle::where('status', 'published')->latest('published_at')->paginate(12);
 
     return view('pages.news', compact('news'));
@@ -56,6 +60,10 @@ Route::get('/news/{slug}', function (string $slug) {
 });
 
 Route::get('/careers', function () {
+    $page = Page::where('slug', 'careers')->first();
+    if ($page && $page->status !== 'published') {
+        abort(404);
+    }
     $careers = Career::where('status', 'open')->where('is_active', true)->latest('published_at')->paginate(12);
 
     return view('pages.careers', compact('careers'));
@@ -68,6 +76,11 @@ Route::get('/careers/{slug}', function (string $slug) {
 });
 
 Route::get('/contact', function () {
+    $page = Page::where('slug', 'contact')->first();
+    if ($page && $page->status !== 'published') {
+        abort(404);
+    }
+
     return view('pages.contact');
 });
 

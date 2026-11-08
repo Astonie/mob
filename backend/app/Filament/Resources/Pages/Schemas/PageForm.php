@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Pages\Schemas;
 
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -31,7 +32,14 @@ class PageForm
                     ->visibility('public')
                     ->maxSize(4096)
                     ->fetchFileInformation(false),
-                TextInput::make('status')
+                Select::make('status')
+                    ->options([
+                        'draft' => 'Draft',
+                        'review' => 'Review',
+                        'approved' => 'Approved',
+                        'published' => 'Published',
+                        'archived' => 'Archived',
+                    ])
                     ->required()
                     ->default('draft'),
                 Toggle::make('is_homepage')
