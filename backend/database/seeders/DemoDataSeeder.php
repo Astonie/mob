@@ -150,13 +150,13 @@ class DemoDataSeeder extends Seeder
         $services->blocks()->delete();
         $services->blocks()->create(['type' => 'hero', 'data' => ['heading' => 'Our Core Services', 'subheading' => 'Seven disciplines. One integrated team — delivering JORC, NI 43-101 and SAMREC compliant technical services across the SADC mining value chain.', 'cta_label' => 'Talk to us', 'cta_url' => '/contact'], 'sort_order' => 0]);
         $services->blocks()->create(['type' => 'card_grid', 'data' => ['title' => 'Our Core Services', 'cards' => [
-            ['title' => 'Geological Services', 'text' => 'Geological mapping, prospecting, structural studies & resource evaluation.', 'url' => '/geological-services'],
-            ['title' => 'Mineral Exploration', 'text' => 'Exploration planning, geochemical sampling, drilling supervision & reporting.', 'url' => '/mineral-exploration'],
-            ['title' => 'Surveying, GIS & Remote Sensing', 'text' => 'Topographic surveys, drone mapping, GIS analysis & spatial solutions.', 'url' => '/surveying-gis-remote-sensing'],
-            ['title' => 'Geophysical Services', 'text' => 'Magnetic, electrical & EM surveys with professional data interpretation.', 'url' => '/geophysical-services'],
-            ['title' => 'Mining Consultancy', 'text' => 'Mine planning, feasibility studies, due diligence & technical advisory services.', 'url' => '/mining-consultancy'],
-            ['title' => 'Environmental & Regulatory Services', 'text' => 'Environmental assessments, compliance support, licensing & rehabilitation planning.', 'url' => '/environmental-regulatory-services'],
-            ['title' => 'Project Management & Technical Support', 'text' => 'Project management, HSE, technical reporting, field logistics & data management.', 'url' => '/project-management-technical-support'],
+            ['title' => 'Geological Services', 'text' => 'Geological mapping, prospecting, structural studies & resource evaluation.', 'url' => '/services/geological-services'],
+            ['title' => 'Mineral Exploration', 'text' => 'Exploration planning, geochemical sampling, drilling supervision & reporting.', 'url' => '/services/mineral-exploration'],
+            ['title' => 'Surveying, GIS & Remote Sensing', 'text' => 'Topographic surveys, drone mapping, GIS analysis & spatial solutions.', 'url' => '/services/surveying-gis-remote-sensing'],
+            ['title' => 'Geophysical Services', 'text' => 'Magnetic, electrical & EM surveys with professional data interpretation.', 'url' => '/services/geophysical-services'],
+            ['title' => 'Mining Consultancy', 'text' => 'Mine planning, feasibility studies, due diligence & technical advisory services.', 'url' => '/services/mining-consultancy'],
+            ['title' => 'Environmental & Regulatory Services', 'text' => 'Environmental assessments, compliance support, licensing & rehabilitation planning.', 'url' => '/services/environmental-regulatory-services'],
+            ['title' => 'Project Management & Technical Support', 'text' => 'Project management, HSE, technical reporting, field logistics & data management.', 'url' => '/services/project-management-technical-support'],
         ]], 'sort_order' => 1]);
         $services->blocks()->create(['type' => 'cta', 'data' => ['heading' => 'Ready to de-risk your next project?', 'text' => 'Talk to our Lilongwe team. Response within one business day.', 'cta_label' => 'Get in touch', 'cta_url' => '/contact'], 'sort_order' => 2]);
 

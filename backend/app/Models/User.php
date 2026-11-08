@@ -21,6 +21,11 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use CanResetPassword, HasApiTokens, HasFactory, HasRoles, Notifiable;
 
+    public function canAccessPanel(\Filament\Panel $panel): bool
+    {
+        return true;
+    }
+
     /**
      * Get the attributes that should be cast.
      *
