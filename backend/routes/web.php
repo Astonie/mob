@@ -71,3 +71,13 @@ Route::get('/sitemap.xml', function () {
     $news = NewsArticle::where('status', 'published')->get();
     return response()->view('sitemap', compact('pages', 'news'), 200, ['Content-Type' => 'application/xml']);
 });
+
+// Admin (session auth)
+Route::get('/admin/login', [\App\Http\Controllers\Admin\AuthController::class, 'showLogin'])->name('admin.login');
+Route::post('/admin/login', [\App\Http\Controllers\Admin\AuthController::class, 'login']);
+Route::post('/admin/logout', [\App\Http\Controllers\Admin\AuthController::class, 'logout'])->middleware('auth');
+
+Route::middleware('auth')->prefix('admin')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::resource('pages', \App\Http\Controllers\Admin\PageController::class)->except(['show']);
+});
