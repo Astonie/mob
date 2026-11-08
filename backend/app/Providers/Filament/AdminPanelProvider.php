@@ -30,8 +30,14 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->passwordReset()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::hex('#0F4A6B'),
+                'gray' => Color::Slate,
             ])
+            ->brandName('Mob Limited CMS')
+            ->brandLogo(asset('logo-mob.svg'))
+            ->brandLogoHeight('2.5rem')
+            ->favicon(asset('favicon.ico'))
+            ->darkMode(false)
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([
