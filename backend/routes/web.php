@@ -26,7 +26,7 @@ Route::get('/about', function () {
 
 Route::get('/services', function () {
     $page = Page::with('blocks')->where('slug', 'services')->where('status', 'published')->firstOrFail();
-    $serviceSlugs = ['geological-services','mineral-exploration','surveying-gis-remote-sensing','geophysical-services','mining-consultancy','environmental-regulatory-services','project-management-technical-support'];
+    $serviceSlugs = ['geological-services', 'mineral-exploration', 'surveying-gis-remote-sensing', 'geophysical-services', 'mining-consultancy', 'environmental-regulatory-services', 'project-management-technical-support'];
     $servicePages = Page::where('status', 'published')->whereIn('slug', $serviceSlugs)->orderBy('sort_order')->get();
 
     return view('pages.services', compact('page', 'servicePages'));
@@ -89,7 +89,7 @@ Route::get('/search', function (Request $request) {
     $q = trim($request->query('q', ''));
     $results = collect();
     if (strlen($q) >= 2) {
-        $results = \App\Models\NewsArticle::where('status', 'published')
+        $results = NewsArticle::where('status', 'published')
             ->where(function ($query) use ($q) {
                 $query->where('title', 'like', "%{$q}%")
                     ->orWhere('excerpt', 'like', "%{$q}%")
