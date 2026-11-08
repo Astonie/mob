@@ -15,7 +15,7 @@
       <div class="overflow-hidden rounded-xl border border-slate-200 bg-white">
         @if($l->photo)
           <div class="relative h-56 w-full overflow-hidden bg-slate-100">
-            <img src="/storage/{{ $l->photo }}" alt="{{ $l->name }}" class="h-full w-full object-cover object-top">
+            <img loading="lazy" src="/storage/{{ $l->photo }}" alt="{{ $l->name }}" class="h-full w-full object-cover object-top">
           </div>
         @else
           <div class="flex h-56 w-full items-center justify-center bg-gradient-to-br from-[#0F4A6B] to-[#0a2e4a]">

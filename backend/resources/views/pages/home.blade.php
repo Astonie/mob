@@ -3,10 +3,34 @@
 @section('title', 'Mob Limited — Integrated Mining & Mineral Consultancy')
 
 @section('content')
+@push('head')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Mob Limited",
+  "url": "https://mobmining.com",
+  "logo": "https://mobmining.com/logo-mob.svg",
+  "description": "Malawi-based, SADC-wide mining and mineral consultancy. JORC, NI 43-101 & SAMREC compliant.",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Area 47 Sector 3",
+    "addressLocality": "Lilongwe",
+    "addressCountry": "MW"
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+265 881 525 611",
+    "contactType": "customer service",
+    "email": "info@moblimited.com"
+  }
+}
+</script>
+@endpush
 <section class="relative overflow-hidden bg-[#061a2a] text-white hero-gradient">
   <div class="absolute inset-0">
     @if(!empty($home->hero_image))
-      <img src="/storage/{{ $home->hero_image }}" alt="" class="h-full w-full object-cover opacity-30">
+      <img loading="lazy" src="/storage/{{ $home->hero_image }}" alt="" class="h-full w-full object-cover opacity-30">
       <div class="absolute inset-0 bg-gradient-to-b from-[#0a1f2e]/60 via-[#0a1f2e]/80 to-[#0a1f2e]"></div>
     @endif
   </div>
@@ -41,7 +65,7 @@
     </div>
     @if(!empty($home->hero_image))
       <div class="relative overflow-hidden rounded-2xl aspect-[4/3] shadow-lg">
-        <img src="/storage/{{ $home->hero_image }}" alt="Mining operations" class="h-full w-full object-cover">
+        <img loading="lazy" src="/storage/{{ $home->hero_image }}" alt="Mining operations" class="h-full w-full object-cover">
       </div>
     @endif
   </div>
@@ -50,7 +74,7 @@
     <h2 class="mt-3 font-serif text-3xl font-bold tracking-tight text-[#0a1f2e]">Seven disciplines. One integrated team.</h2>
   </div>
   <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-    @foreach(\App\Models\Page::where('status','published')->whereNotIn('slug',['home','about','services','news','careers','contact','privacy','terms'])->orderBy('sort_order')->get() as $svc)
+    @foreach(\App\Models\Page::where('status','published')->whereIn('slug',['geological-services','mineral-exploration','surveying-gis-remote-sensing','geophysical-services','mining-consultancy','environmental-regulatory-services','project-management-technical-support'])->orderBy('sort_order')->get() as $svc)
       <a href="/services/{{ $svc->slug }}" class="group card-lift flex flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
         <span class="font-serif text-[13px] font-bold tracking-widest text-[#0F4A6B]">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
         <h3 class="mt-3 font-serif text-[17px] font-bold leading-tight text-[#0a1f2e] group-hover:text-[#0F4A6B]">{{ $svc->title }}</h3>
@@ -70,10 +94,10 @@
       </div>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-      <div class="relative overflow-hidden rounded-xl aspect-square shadow-md hover:shadow-xl transition-shadow"><img src="https://images.unsplash.com/photo-1513828583688-c52646db42da?w=600&auto=format&fit=crop&q=80" alt="Mining" class="h-full w-full object-cover hover:scale-105 transition-transform duration-500"></div>
-      <div class="relative overflow-hidden rounded-xl aspect-square shadow-md hover:shadow-xl transition-shadow"><img src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=600&auto=format&fit=crop&q=80" alt="Mining" class="h-full w-full object-cover hover:scale-105 transition-transform duration-500"></div>
-      <div class="relative overflow-hidden rounded-xl aspect-square shadow-md hover:shadow-xl transition-shadow"><img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=600&auto=format&fit=crop&q=80" alt="Mining" class="h-full w-full object-cover hover:scale-105 transition-transform duration-500"></div>
-      <div class="relative overflow-hidden rounded-xl aspect-square shadow-md hover:shadow-xl transition-shadow"><img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&auto=format&fit=crop&q=80" alt="Mining" class="h-full w-full object-cover hover:scale-105 transition-transform duration-500"></div>
+      <div class="relative overflow-hidden rounded-xl aspect-square shadow-md hover:shadow-xl transition-shadow"><img loading="lazy" src="https://images.unsplash.com/photo-1513828583688-c52646db42da?w=600&auto=format&fit=crop&q=80" alt="Mining" class="h-full w-full object-cover hover:scale-105 transition-transform duration-500"></div>
+      <div class="relative overflow-hidden rounded-xl aspect-square shadow-md hover:shadow-xl transition-shadow"><img loading="lazy" src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=600&auto=format&fit=crop&q=80" alt="Mining" class="h-full w-full object-cover hover:scale-105 transition-transform duration-500"></div>
+      <div class="relative overflow-hidden rounded-xl aspect-square shadow-md hover:shadow-xl transition-shadow"><img loading="lazy" src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=600&auto=format&fit=crop&q=80" alt="Mining" class="h-full w-full object-cover hover:scale-105 transition-transform duration-500"></div>
+      <div class="relative overflow-hidden rounded-xl aspect-square shadow-md hover:shadow-xl transition-shadow"><img loading="lazy" src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&auto=format&fit=crop&q=80" alt="Mining" class="h-full w-full object-cover hover:scale-105 transition-transform duration-500"></div>
     </div>
   </div>
 </section>

@@ -6,7 +6,7 @@
   @php $hero = collect($page->blocks)->firstWhere('type','hero'); @endphp
   @if(!empty($hero['data']['image']))
     <div class="absolute inset-0 lg:left-[52%] overflow-hidden">
-      <img src="{{ $hero['data']['image'] }}" alt="" class="h-full w-full object-cover opacity-30 lg:opacity-60">
+      <img loading="lazy" src="{{ $hero['data']['image'] }}" alt="" class="h-full w-full object-cover opacity-30 lg:opacity-60">
       <div class="absolute inset-0 bg-gradient-to-r from-[#0F4A6B] via-[#0F4A6B]/70 to-transparent lg:to-[#0F4A6B]/20"></div>
     </div>
   @endif

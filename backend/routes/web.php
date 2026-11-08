@@ -26,7 +26,8 @@ Route::get('/about', function () {
 
 Route::get('/services', function () {
     $page = Page::with('blocks')->where('slug', 'services')->where('status', 'published')->firstOrFail();
-    $servicePages = Page::where('status', 'published')->where('slug', '!=', 'services')->orderBy('sort_order')->get();
+    $serviceSlugs = ['geological-services','mineral-exploration','surveying-gis-remote-sensing','geophysical-services','mining-consultancy','environmental-regulatory-services','project-management-technical-support'];
+    $servicePages = Page::where('status', 'published')->whereIn('slug', $serviceSlugs)->orderBy('sort_order')->get();
 
     return view('pages.services', compact('page', 'servicePages'));
 });
@@ -85,9 +86,21 @@ Route::get('/contact', function () {
 });
 
 Route::get('/search', function (Request $request) {
-    $q = $request->query('q', '');
+    $q = trim($request->query('q', ''));
+    $results = collect();
+    if (strlen($q) >= 2) {
+        $results = \App\Models\NewsArticle::where('status', 'published')
+            ->where(function ($query) use ($q) {
+                $query->where('title', 'like', "%{$q}%")
+                    ->orWhere('excerpt', 'like', "%{$q}%")
+                    ->orWhere('content', 'like', "%{$q}%");
+            })
+            ->latest('published_at')
+            ->take(20)
+            ->get();
+    }
 
-    return view('pages.search', compact('q'));
+    return view('pages.search', compact('q', 'results'));
 });
 
 Route::get('/sitemap.xml', function () {

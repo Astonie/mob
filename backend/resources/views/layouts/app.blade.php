@@ -3,10 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>@yield('title', 'Mob Limited')</title>
+  <title>@yield('title', 'Mob Limited — Integrated Mining & Mineral Consultancy')</title>
+  <meta name="description" content="@yield('description', 'Malawi-based, SADC-wide mining consultancy. JORC, NI 43-101 & SAMREC compliant. 120+ projects across 8 SADC countries.')">
+  <meta property="og:title" content="@yield('title', 'Mob Limited — Integrated Mining & Mineral Consultancy')">
+  <meta property="og:description" content="@yield('description', 'Malawi-based, SADC-wide mining consultancy. JORC, NI 43-101 & SAMREC compliant. 120+ projects across 8 SADC countries.')">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ url()->current() }}">
+  <meta property="og:site_name" content="Mob Limited">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="/favicon.ico" sizes="any">
   <link rel="icon" href="/logo-mob.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/logo-mob.svg">
+  <link rel="canonical" href="{{ url()->current() }}">
+  @stack('head')
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
@@ -38,24 +47,39 @@
   </style>
 </head>
 <body class="min-h-screen bg-white text-[#0f1f2e] antialiased">
+  @php
+    $publishedSlugs = \App\Models\Page::where('status','published')->pluck('slug')->toArray();
+    $navItems = [
+      ['/', 'Home'],
+      ['/about', 'About'],
+      ['/services', 'Our Services'],
+      ['/team', 'Our Team'],
+      ['/news', 'News'],
+      ['/careers', 'Careers'],
+      ['/contact', 'Contact'],
+    ];
+    $visibleNav = [];
+    foreach ($navItems as [$url, $label]) {
+        $slug = trim($url, '/');
+        if ($url === '/' || ! \App\Models\Page::where('slug', $slug)->exists() || in_array($slug, $publishedSlugs)) {
+            $visibleNav[] = [$url, $label];
+        }
+    }
+  @endphp
   <header class="sticky top-0 z-50 border-b border-slate-200/70 bg-white/90 backdrop-blur-xl">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
       <div class="flex h-[72px] items-center justify-between gap-8">
         <a href="/" class="flex items-center gap-3 shrink-0">
-          <img src="/logo-mob.svg" alt="Mob Limited" class="h-12 w-auto shrink-0">
+          <img loading="lazy" src="/logo-mob.svg" alt="Mob Limited" class="h-12 w-auto shrink-0">
           <div class="leading-none">
             <div class="font-black tracking-[0.14em] text-[#22262B] text-[15px]">MOB LIMITED</div>
             <div class="text-[9px] tracking-[0.08em] text-[#0F4A6B] font-medium">Integrated Mining &amp; Mineral Solutions</div>
           </div>
         </a>
         <nav class="hidden lg:flex items-center gap-1" id="main-nav">
-          <a href="/" class="relative px-3.5 py-2 text-[13.5px] font-medium text-slate-700 hover:text-[#0F4A6B]">Home</a>
-          <a href="/about" class="relative px-3.5 py-2 text-[13.5px] font-medium text-slate-700 hover:text-[#0F4A6B]">About</a>
-          <a href="/services" class="relative px-3.5 py-2 text-[13.5px] font-medium text-slate-700 hover:text-[#0F4A6B]">Our Services</a>
-          <a href="/team" class="relative px-3.5 py-2 text-[13.5px] font-medium text-slate-700 hover:text-[#0F4A6B]">Our Team</a>
-          <a href="/news" class="relative px-3.5 py-2 text-[13.5px] font-medium text-slate-700 hover:text-[#0F4A6B]">News</a>
-          <a href="/careers" class="relative px-3.5 py-2 text-[13.5px] font-medium text-slate-700 hover:text-[#0F4A6B]">Careers</a>
-          <a href="/contact" class="relative px-3.5 py-2 text-[13.5px] font-medium text-slate-700 hover:text-[#0F4A6B]">Contact</a>
+          @foreach($visibleNav as [$url, $label])
+            <a href="{{ $url }}" class="relative px-3.5 py-2 text-[13.5px] font-medium text-slate-700 hover:text-[#0F4A6B]">{{ $label }}</a>
+          @endforeach
         </nav>
         <div class="flex items-center gap-2.5">
           <a href="/contact" class="hidden sm:inline-flex h-10 px-6 items-center justify-center bg-[#0F4A6B] text-white text-[13px] font-semibold rounded-lg hover:bg-[#0a334d]">Contact Us</a>
@@ -67,13 +91,9 @@
     </div>
     <div id="mobileMenu" class="hidden lg:hidden border-t border-slate-200 bg-white">
       <nav class="px-6 py-4 space-y-1">
-        <a href="/" class="block px-3 py-2.5 rounded-lg text-[15px] font-medium text-slate-700 hover:bg-slate-50 hover:text-[#0F4A6B]">Home</a>
-        <a href="/about" class="block px-3 py-2.5 rounded-lg text-[15px] font-medium text-slate-700 hover:bg-slate-50 hover:text-[#0F4A6B]">About</a>
-        <a href="/services" class="block px-3 py-2.5 rounded-lg text-[15px] font-medium text-slate-700 hover:bg-slate-50 hover:text-[#0F4A6B]">Our Services</a>
-        <a href="/team" class="block px-3 py-2.5 rounded-lg text-[15px] font-medium text-slate-700 hover:bg-slate-50 hover:text-[#0F4A6B]">Our Team</a>
-        <a href="/news" class="block px-3 py-2.5 rounded-lg text-[15px] font-medium text-slate-700 hover:bg-slate-50 hover:text-[#0F4A6B]">News</a>
-        <a href="/careers" class="block px-3 py-2.5 rounded-lg text-[15px] font-medium text-slate-700 hover:bg-slate-50 hover:text-[#0F4A6B]">Careers</a>
-        <a href="/contact" class="block px-3 py-2.5 rounded-lg text-[15px] font-medium text-slate-700 hover:bg-slate-50 hover:text-[#0F4A6B]">Contact</a>
+        @foreach($visibleNav as [$url, $label])
+          <a href="{{ $url }}" class="block px-3 py-2.5 rounded-lg text-[15px] font-medium text-slate-700 hover:bg-slate-50 hover:text-[#0F4A6B]">{{ $label }}</a>
+        @endforeach
       </nav>
     </div>
       </div>
@@ -87,7 +107,7 @@
       <div class="grid gap-10 lg:grid-cols-12">
         <div class="lg:col-span-5">
           <div class="flex items-center gap-3">
-            <img src="/logo-mob.svg" alt="Mob Limited" class="h-12 w-auto shrink-0">
+            <img loading="lazy" src="/logo-mob.svg" alt="Mob Limited" class="h-12 w-auto shrink-0">
             <div class="leading-none">
               <div class="font-black tracking-[0.12em] text-white text-[15px]">MOB LIMITED</div>
               <div class="text-[9px] tracking-[0.08em] text-white/70 font-medium">Integrated Mining &amp; Mineral Solutions</div>
@@ -111,12 +131,11 @@
         <div class="lg:col-span-2">
           <h4 class="text-[11px] font-semibold tracking-[0.18em] text-white">COMPANY</h4>
           <ul class="mt-4 space-y-2.5 text-sm text-slate-400">
-            <li><a href="/about" class="hover:text-white">About Mob</a></li>
-            <li><a href="/team" class="hover:text-white">Our Team</a></li>
-            <li><a href="/services" class="hover:text-white">Our Services</a></li>
-            <li><a href="/news" class="hover:text-white">Insights</a></li>
-            <li><a href="/careers" class="hover:text-white">Careers</a></li>
-            <li><a href="/contact" class="hover:text-white">Contact</a></li>
+            @foreach($visibleNav as [$url, $label])
+              @if($label !== 'Home')
+                <li><a href="{{ $url }}" class="hover:text-white">{{ $label }}</a></li>
+              @endif
+            @endforeach
           </ul>
         </div>
         <div class="lg:col-span-3">

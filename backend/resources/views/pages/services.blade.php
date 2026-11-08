@@ -4,7 +4,7 @@
 <section class="relative overflow-hidden bg-[#061a2a] text-white py-20">
   @if(!empty($page->hero_image))
     <div class="absolute inset-0">
-      <img src="/storage/{{ $page->hero_image }}" alt="" class="h-full w-full object-cover opacity-30">
+      <img loading="lazy" src="/storage/{{ $page->hero_image }}" alt="" class="h-full w-full object-cover opacity-30">
       <div class="absolute inset-0 bg-gradient-to-b from-[#0a1f2e]/60 via-[#0a1f2e]/80 to-[#0a1f2e]"></div>
     </div>
   @else
