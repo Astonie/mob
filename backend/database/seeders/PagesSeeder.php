@@ -20,12 +20,20 @@ class PagesSeeder extends Seeder
         foreach ($pages as $p) {
             $page = Page::withTrashed()->firstOrCreate(
                 ['slug' => $p['slug']],
-                array_merge($p, ['status' => 'draft', 'template' => 'default'])
+                array_merge($p, ['status' => 'published', 'template' => 'default', 'published_at' => now()])
             );
             if ($page->trashed()) {
                 $page->restore();
             }
+            $page->update(['status' => 'published', 'published_at' => now()]);
         }
+
+        // Home page (published)
+        $home = Page::withTrashed()->firstOrCreate(['slug' => 'home'], ['title' => 'Home', 'template' => 'home', 'excerpt' => 'Mob Limited — Integrated Mining and Mineral Consultancy', 'sort_order' => 0, 'is_homepage' => true]);
+        if ($home->trashed()) {
+            $home->restore();
+        }
+        $home->update(['status' => 'published', 'published_at' => now()]);
 
         // About page — consistent with the services page UI
         $about = Page::withTrashed()->firstOrCreate(['slug' => 'about'], ['title' => 'About Mob Limited', 'template' => 'default', 'excerpt' => 'About Mob Limited', 'sort_order' => 1]);

@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    $home = Page::with('blocks')->where('slug', 'home')->where('status', 'published')->first();
+    $home = Page::with('blocks')->where('slug', 'home')->where('status', 'published')->firstOrFail();
     $services = Page::with('blocks')->where('slug', 'services')->where('status', 'published')->first();
     $news = NewsArticle::where('status', 'published')->latest('published_at')->take(3)->get();
     $projects = Project::where('content_status', 'published')->where('is_active', true)->take(6)->get();
@@ -18,14 +18,14 @@ Route::get('/', function () {
 });
 
 Route::get('/about', function () {
-    $page = Page::with('blocks')->where('slug', 'about')->where('status', 'published')->first();
+    $page = Page::with('blocks')->where('slug', 'about')->where('status', 'published')->firstOrFail();
     $leaders = LeadershipProfile::where('is_active', true)->orderBy('sort_order')->get();
 
     return view('pages.about', compact('page', 'leaders'));
 });
 
 Route::get('/services', function () {
-    $page = Page::with('blocks')->where('slug', 'services')->where('status', 'published')->first();
+    $page = Page::with('blocks')->where('slug', 'services')->where('status', 'published')->firstOrFail();
     $servicePages = Page::where('status', 'published')->where('slug', '!=', 'services')->orderBy('sort_order')->get();
 
     return view('pages.services', compact('page', 'servicePages'));
