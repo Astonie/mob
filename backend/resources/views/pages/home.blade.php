@@ -5,6 +5,7 @@
 @section('content')
 @push('head')
 <script type="application/ld+json">
+@verbatim
 {
   "@context": "https://schema.org",
   "@type": "Organization",
@@ -25,6 +26,7 @@
     "email": "info@moblimited.com"
   }
 }
+@endverbatim
 </script>
 @endpush
 <section class="relative overflow-hidden bg-[#061a2a] text-white hero-gradient">
