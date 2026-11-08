@@ -16,7 +16,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable(['name', 'email', 'password', 'two_factor_secret', 'two_factor_enabled', 'two_factor_confirmed_at', 'failed_login_attempts', 'locked_until', 'password_changed_at', 'last_login_at', 'last_login_ip'])]
 #[Hidden(['password', 'remember_token', 'two_factor_secret'])]
-class User extends Authenticatable
+class User extends Authenticatable implements \Filament\Models\Contracts\FilamentUser
 {
     /** @use HasFactory<UserFactory> */
     use CanResetPassword, HasApiTokens, HasFactory, HasRoles, Notifiable;
