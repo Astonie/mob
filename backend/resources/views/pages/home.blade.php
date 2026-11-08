@@ -27,7 +27,7 @@
   </div>
 </section>
 
-<section class="mx-auto max-w-7xl px-6 lg:px-8 py-16">
+<section class="mx-auto max-w-7xl px-6 lg:px-8 py-16 reveal">
   <div class="max-w-2xl">
     <p class="text-[11px] tracking-[0.22em] text-[#0F4A6B] font-bold">OUR CORE SERVICES</p>
     <h2 class="mt-3 font-serif text-3xl font-bold tracking-tight text-[#0a1f2e]">Seven disciplines. One integrated team.</h2>

@@ -25,6 +25,10 @@
     body { font-family: 'DM Sans', system-ui, sans-serif; }
     .font-serif { font-family: 'Playfair Display', Georgia, serif; }
     .grain { background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 20px 20px; }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .nav-active { color: #0F4A6B !important; font-weight: 700; }
+    .nav-active::after { content: ''; position: absolute; left: 0.75rem; right: 0.75rem; bottom: -1px; height: 2px; background: #0F4A6B; border-radius: 2px; }
   </style>
 </head>
 <body class="min-h-screen bg-white text-[#0f1f2e] antialiased">
@@ -38,14 +42,14 @@
             <div class="text-[9px] tracking-[0.08em] text-[#0F4A6B] font-medium">Integrated Mining &amp; Mineral Solutions</div>
           </div>
         </a>
-        <nav class="hidden lg:flex items-center gap-1">
-          <a href="/" class="px-3.5 py-2 text-[13.5px] font-medium text-slate-700 hover:text-[#0F4A6B]">Home</a>
-          <a href="/about" class="px-3.5 py-2 text-[13.5px] font-medium text-slate-700 hover:text-[#0F4A6B]">About</a>
-          <a href="/services" class="px-3.5 py-2 text-[13.5px] font-medium text-slate-700 hover:text-[#0F4A6B]">Our Services</a>
-          <a href="/team" class="px-3.5 py-2 text-[13.5px] font-medium text-slate-700 hover:text-[#0F4A6B]">Our Team</a>
-          <a href="/news" class="px-3.5 py-2 text-[13.5px] font-medium text-slate-700 hover:text-[#0F4A6B]">News</a>
-          <a href="/careers" class="px-3.5 py-2 text-[13.5px] font-medium text-slate-700 hover:text-[#0F4A6B]">Careers</a>
-          <a href="/contact" class="px-3.5 py-2 text-[13.5px] font-medium text-slate-700 hover:text-[#0F4A6B]">Contact</a>
+        <nav class="hidden lg:flex items-center gap-1" id="main-nav">
+          <a href="/" class="relative px-3.5 py-2 text-[13.5px] font-medium text-slate-700 hover:text-[#0F4A6B]">Home</a>
+          <a href="/about" class="relative px-3.5 py-2 text-[13.5px] font-medium text-slate-700 hover:text-[#0F4A6B]">About</a>
+          <a href="/services" class="relative px-3.5 py-2 text-[13.5px] font-medium text-slate-700 hover:text-[#0F4A6B]">Our Services</a>
+          <a href="/team" class="relative px-3.5 py-2 text-[13.5px] font-medium text-slate-700 hover:text-[#0F4A6B]">Our Team</a>
+          <a href="/news" class="relative px-3.5 py-2 text-[13.5px] font-medium text-slate-700 hover:text-[#0F4A6B]">News</a>
+          <a href="/careers" class="relative px-3.5 py-2 text-[13.5px] font-medium text-slate-700 hover:text-[#0F4A6B]">Careers</a>
+          <a href="/contact" class="relative px-3.5 py-2 text-[13.5px] font-medium text-slate-700 hover:text-[#0F4A6B]">Contact</a>
         </nav>
         <div class="flex items-center gap-2.5">
           <a href="/contact" class="hidden sm:inline-flex h-10 px-6 items-center justify-center bg-[#0F4A6B] text-white text-[13px] font-semibold rounded-lg hover:bg-[#0a334d]">Contact Us</a>
@@ -113,5 +117,35 @@
       </div>
     </div>
   </footer>
+  <button id="backToTop" aria-label="Back to top" class="fixed bottom-6 right-6 z-50 hidden h-11 w-11 items-center justify-center rounded-full bg-[#0F4A6B] text-white shadow-lg transition hover:bg-[#0a334d]">
+    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
+  </button>
+
+  <script>
+    (function () {
+      // Active nav indicator
+      const path = window.location.pathname.replace(/\/$/, '') || '/';
+      document.querySelectorAll('#main-nav a').forEach((a) => {
+        const href = (a.getAttribute('href') || '').replace(/\/$/, '') || '/';
+        if (href === path || (href !== '/' && path.startsWith(href))) {
+          a.classList.add('nav-active');
+        }
+      });
+
+      // Back to top
+      const btn = document.getElementById('backToTop');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 400) { btn.classList.remove('hidden'); btn.classList.add('flex'); }
+        else { btn.classList.add('hidden'); btn.classList.remove('flex'); }
+      }, { passive: true });
+      btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+      // Scroll reveal
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+      }, { threshold: 0.12 });
+      document.querySelectorAll('.reveal').forEach((el) => obs.observe(el));
+    })();
+  </script>
 </body>
 </html>
