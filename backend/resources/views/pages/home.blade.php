@@ -3,13 +3,11 @@
 @section('title', 'Mob Limited — Integrated Mining & Mineral Consultancy')
 
 @section('content')
-<section class="relative overflow-hidden bg-[#061a2a] text-white">
+<section class="relative overflow-hidden bg-[#061a2a] text-white hero-gradient">
   <div class="absolute inset-0">
     @if(!empty($home->hero_image))
       <img src="/storage/{{ $home->hero_image }}" alt="" class="h-full w-full object-cover opacity-30">
       <div class="absolute inset-0 bg-gradient-to-b from-[#0a1f2e]/60 via-[#0a1f2e]/80 to-[#0a1f2e]"></div>
-    @else
-      <div class="absolute inset-0 bg-gradient-to-br from-[#0a2e4a] via-[#0F4A6B] to-[#0a1f2e]"></div>
     @endif
   </div>
   <div class="relative mx-auto max-w-7xl px-6 lg:px-8 py-24 lg:py-32">
@@ -27,7 +25,7 @@
   <div class="mx-auto max-w-7xl px-6 lg:px-8 py-9 grid grid-cols-2 lg:grid-cols-4 gap-8">
     @foreach([['Projects Delivered','120+'],['Years in SADC','10+'],['JORC Resources Defined','2.1 Bt'],['SADC Countries','8']] as [$label,$value])
       <div class="border-l-[3px] border-[#0F4A6B] pl-5">
-        <div class="font-serif text-[28px] font-bold text-[#0a1f2e] leading-none">{{ $value }}</div>
+        <div class="font-serif text-[28px] font-bold text-[#0a1f2e] leading-none" data-countup="{{ $value }}">{{ $value }}</div>
         <div class="text-[11px] tracking-[0.16em] text-slate-500 mt-2 font-medium">{{ strtoupper($label) }}</div>
       </div>
     @endforeach
@@ -53,7 +51,7 @@
   </div>
   <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
     @foreach(\App\Models\Page::where('status','published')->whereNotIn('slug',['home','about','services','news','careers','contact','privacy','terms'])->orderBy('sort_order')->get() as $svc)
-      <a href="/services/{{ $svc->slug }}" class="group flex flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm hover:-translate-y-0.5 hover:border-[#0F4A6B]/40 hover:shadow-lg transition-all">
+      <a href="/services/{{ $svc->slug }}" class="group card-lift flex flex-col rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
         <span class="font-serif text-[13px] font-bold tracking-widest text-[#0F4A6B]">{{ $svc->sort_order ? str_pad($svc->sort_order,2,'0',STR_PAD_LEFT) : '' }}</span>
         <h3 class="mt-3 font-serif text-[17px] font-bold leading-tight text-[#0a1f2e] group-hover:text-[#0F4A6B]">{{ $svc->title }}</h3>
         <p class="mt-2.5 flex-1 text-[13px] leading-6 text-slate-600">{{ $svc->excerpt }}</p>
@@ -64,7 +62,24 @@
 
 <section class="bg-[#f8f9fb] border-y border-slate-200">
   <div class="mx-auto max-w-7xl px-6 lg:px-8 py-16">
-    <h2 class="font-serif text-2xl font-bold tracking-tight">Commodities we sign off</h2>
+    <div class="grid lg:grid-cols-2 gap-8 items-center mb-12">
+      <div>
+        <p class="text-[11px] tracking-[0.22em] text-[#0F4A6B] font-bold">PROJECT GALLERY</p>
+        <h2 class="mt-3 font-serif text-3xl font-bold tracking-tight text-[#0a1f2e]">Mining across the SADC region</h2>
+        <p class="mt-4 text-[15px] leading-7 text-slate-600">From Lilongwe to Kolwezi, Solwezi and beyond — field execution, resource modelling and mine development in action.</p>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="relative overflow-hidden rounded-xl aspect-square shadow-md hover:shadow-xl transition-shadow"><img src="https://images.unsplash.com/photo-1513828583688-c52646db42da?w=600&auto=format&fit=crop&q=80" alt="Mining" class="h-full w-full object-cover hover:scale-105 transition-transform duration-500"></div>
+      <div class="relative overflow-hidden rounded-xl aspect-square shadow-md hover:shadow-xl transition-shadow"><img src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?w=600&auto=format&fit=crop&q=80" alt="Mining" class="h-full w-full object-cover hover:scale-105 transition-transform duration-500"></div>
+      <div class="relative overflow-hidden rounded-xl aspect-square shadow-md hover:shadow-xl transition-shadow"><img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=600&auto=format&fit=crop&q=80" alt="Mining" class="h-full w-full object-cover hover:scale-105 transition-transform duration-500"></div>
+      <div class="relative overflow-hidden rounded-xl aspect-square shadow-md hover:shadow-xl transition-shadow"><img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&auto=format&fit=crop&q=80" alt="Mining" class="h-full w-full object-cover hover:scale-105 transition-transform duration-500"></div>
+    </div>
+  </div>
+</section>
+
+<section class="mx-auto max-w-7xl px-6 lg:px-8 py-16">
+  <h2 class="font-serif text-2xl font-bold tracking-tight">Commodities we sign off</h2>
     <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
       @foreach(\App\Models\Mineral::where('status','published')->take(4)->get() as $m)
         <div class="bg-white rounded-xl border border-slate-200 p-5">

@@ -29,6 +29,12 @@
     .reveal.in { opacity: 1; transform: translateY(0); }
     .nav-active { color: #0F4A6B !important; font-weight: 700; }
     .nav-active::after { content: ''; position: absolute; left: 0.75rem; right: 0.75rem; bottom: -1px; height: 2px; background: #0F4A6B; border-radius: 2px; }
+    .card-lift { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .card-lift:hover { transform: translateY(-6px); box-shadow: 0 20px 40px -12px rgba(15,74,107,0.25); }
+    .hero-gradient { background: linear-gradient(135deg, #0a2e4a 0%, #0F4A6B 50%, #0a1f2e 100%); background-size: 200% 200%; animation: gradientShift 8s ease infinite; }
+    @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+    .marquee-track { display: flex; animation: marquee 30s linear infinite; }
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
   </style>
 </head>
 <body class="min-h-screen bg-white text-[#0f1f2e] antialiased">
@@ -168,6 +174,29 @@
         entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
       }, { threshold: 0.12 });
       document.querySelectorAll('.reveal').forEach((el) => obs.observe(el));
+
+      // CountUp animation
+      document.querySelectorAll('[data-countup]').forEach((el) => {
+        const target = el.getAttribute('data-countup');
+        const match = target.match(/^([\d.]+)(.*)$/);
+        if (!match) return;
+        const num = parseFloat(match[1]);
+        const suffix = match[2];
+        let start = 0;
+        const duration = 1500;
+        const startTime = performance.now();
+        function step(now) {
+          const progress = Math.min((now - startTime) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = num * eased;
+          el.textContent = (Number.isInteger(num) ? Math.round(current) : current.toFixed(1)) + suffix;
+          if (progress < 1) requestAnimationFrame(step);
+        }
+        const counterObs = new IntersectionObserver((entries) => {
+          entries.forEach((e) => { if (e.isIntersecting) { requestAnimationFrame(step); counterObs.unobserve(e.target); } });
+        }, { threshold: 0.5 });
+        counterObs.observe(el);
+      });
     })();
   </script>
 </body>
