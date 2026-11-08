@@ -134,6 +134,35 @@
   </div>
 </section>
 
+<section class="bg-[#f8f9fb] dark:bg-white/5 border-y border-slate-200 dark:border-white/10">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8 py-16">
+    <div class="max-w-2xl mb-10">
+      <p class="text-[11px] tracking-[0.22em] text-[#0F4A6B] font-bold">TESTIMONIALS</p>
+      <h2 class="mt-3 font-serif text-3xl font-bold tracking-tight text-[#0a1f2e] dark:text-white">Trusted by miners, funds and regulators</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+      @foreach([['"Mob delivered a bankable JORC resource that stood up to our lenders."', 'Principal, Junior Miner (Malawi)'],['"Professional, SADC-grounded, and responsive. Highly recommended."', 'Exploration Manager, Mid-tier (Zambia)'],['"Their ESG work opened doors with regulators and communities."', 'CEO, Mining Fund (SADC)']] as [$quote,$author])
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:bg-white/5 dark:border-white/10">
+          <p class="text-[15px] leading-7 text-slate-700 dark:text-slate-200 italic">{{ $quote }}</p>
+          <p class="mt-4 text-[12px] font-semibold text-[#0F4A6B]">— {{ $author }}</p>
+        </div>
+      @endforeach
+    </div>
+  </div>
+</section>
+
+<section class="mx-auto max-w-7xl px-6 lg:px-8 py-16">
+  <div class="max-w-2xl mx-auto text-center">
+    <p class="text-[11px] tracking-[0.22em] text-[#0F4A6B] font-bold">STAY INFORMED</p>
+    <h2 class="mt-3 font-serif text-3xl font-bold tracking-tight text-[#0a1f2e] dark:text-white">Mining insights, delivered</h2>
+    <p class="mt-4 text-[15px] leading-7 text-slate-600 dark:text-slate-300">Get operational updates and ESG stories from across the SADC region.</p>
+    <form class="mt-6 flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+      <input type="email" placeholder="Your email" class="flex-1 rounded-lg border px-3 py-2 text-sm dark:bg-white/5 dark:border-white/10 dark:text-white">
+      <button class="rounded-lg bg-[#0F4A6B] px-6 py-2 text-sm font-semibold text-white hover:bg-[#0a334d]">Subscribe</button>
+    </form>
+  </div>
+</section>
+
 <section class="mx-auto max-w-7xl px-6 lg:px-8 pb-16">
   <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0d3d59] via-[#0F4A6B] to-[#0a2e4a] px-8 lg:px-16 py-16 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 shadow-2xl shadow-[#0F4A6B]/30">
     <div>

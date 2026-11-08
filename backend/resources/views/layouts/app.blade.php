@@ -189,6 +189,14 @@
     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7"/></svg>
   </button>
 
+  <div id="cookieBanner" class="fixed bottom-4 left-4 right-4 z-50 hidden max-w-xl rounded-xl border border-slate-200 bg-white p-4 shadow-2xl dark:border-white/10 dark:bg-[#112233]">
+    <p class="text-sm text-slate-700 dark:text-slate-200">We use cookies to improve your experience. By continuing, you agree to our <a href="/privacy" class="text-[#0F4A6B] underline">Privacy Policy</a>.</p>
+    <div class="mt-3 flex gap-2">
+      <button id="cookieAccept" class="rounded-lg bg-[#0F4A6B] px-4 py-2 text-xs font-semibold text-white hover:bg-[#0a334d]">Accept</button>
+      <button id="cookieDecline" class="rounded-lg border px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:border-white/20">Decline</button>
+    </div>
+  </div>
+
   <script>
     (function () {
       // Theme toggle
@@ -215,6 +223,26 @@
           a.classList.add('nav-active');
         }
       });
+
+      // Cookie consent
+      const cookieBanner = document.getElementById('cookieBanner');
+      const cookieAccept = document.getElementById('cookieAccept');
+      const cookieDecline = document.getElementById('cookieDecline');
+      if (cookieBanner && !localStorage.getItem('cookieConsent')) {
+        cookieBanner.classList.remove('hidden');
+      }
+      if (cookieAccept) {
+        cookieAccept.addEventListener('click', () => {
+          localStorage.setItem('cookieConsent', 'accepted');
+          cookieBanner.classList.add('hidden');
+        });
+      }
+      if (cookieDecline) {
+        cookieDecline.addEventListener('click', () => {
+          localStorage.setItem('cookieConsent', 'declined');
+          cookieBanner.classList.add('hidden');
+        });
+      }
 
       // Back to top
       const btn = document.getElementById('backToTop');
