@@ -2,8 +2,9 @@
 
 namespace App\Filament\Resources\LeadershipProfiles\Schemas;
 
-use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 
@@ -26,7 +27,13 @@ class LeadershipProfileForm
                     ->columnSpanFull(),
                 Textarea::make('full_bio')
                     ->columnSpanFull(),
-                TextInput::make('photo'),
+                FileUpload::make('photo')
+                    ->image()
+                    ->disk('public')
+                    ->directory('leadership')
+                    ->visibility('public')
+                    ->imageEditor()
+                    ->maxSize(2048),
                 TextInput::make('email')
                     ->label('Email address')
                     ->email(),

@@ -5,6 +5,8 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Notifications\ResetPasswordNotification;
 use Database\Factories\UserFactory;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -16,12 +18,12 @@ use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable(['name', 'email', 'password', 'two_factor_secret', 'two_factor_enabled', 'two_factor_confirmed_at', 'failed_login_attempts', 'locked_until', 'password_changed_at', 'last_login_at', 'last_login_ip'])]
 #[Hidden(['password', 'remember_token', 'two_factor_secret'])]
-class User extends Authenticatable implements \Filament\Models\Contracts\FilamentUser
+class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<UserFactory> */
     use CanResetPassword, HasApiTokens, HasFactory, HasRoles, Notifiable;
 
-    public function canAccessPanel(\Filament\Panel $panel): bool
+    public function canAccessPanel(Panel $panel): bool
     {
         return true;
     }

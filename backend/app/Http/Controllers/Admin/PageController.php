@@ -5,18 +5,21 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Page;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PageController extends Controller
 {
     public function index()
     {
         $pages = Page::with('blocks')->latest()->paginate(20);
+
         return view('admin.pages.index', compact('pages'));
     }
 
     public function edit(Page $page)
     {
         $page->load('blocks');
+
         return view('admin.pages.edit', compact('page'));
     }
 
@@ -67,16 +70,18 @@ class PageController extends Controller
         ]);
         $page = Page::create([
             'title' => $data['title'],
-            'slug' => $data['slug'] ?? \Illuminate\Support\Str::slug($data['title']),
+            'slug' => $data['slug'] ?? Str::slug($data['title']),
             'status' => 'draft',
             'created_by' => auth()->id(),
         ]);
+
         return redirect()->route('admin.pages.edit', $page);
     }
 
     public function destroy(Page $page)
     {
         $page->delete();
+
         return redirect()->route('admin.pages.index')->with('ok', 'Page deleted.');
     }
 }
